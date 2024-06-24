@@ -1,0 +1,29 @@
+package inputs
+
+import "date-rate/app/components/svgs"
+
+templ ButtonGoogleSignIn() {
+	<script src="/dist/pocketbase/dist/pocketbase.umd.js"></script>
+	<script type="text/javascript">
+        const signInWithGoogle = async () => {
+            const pb = new PocketBase('http://127.0.0.1:8090');
+            const authData = await pb.collection('users').authWithOAuth2({provider: 'google'});
+            const response = await fetch('http://127.0.0.1:8090/login/oauth2', {
+                    method: 'POST',
+                    headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    body: JSON.stringify(authData),
+                })
+            location.reload();
+        }
+    </script>
+	<button
+		type="button"
+		onclick="signInWithGoogle()"
+		class="border border-gray-400 rounded flex gap-2 py-1.5 px-2 items-center justify-center font-medium focus:outline-1 focus:outline-offset-2 focus:outline-blue-400 text-gray-700"
+	>
+		@svgs.GoogleLogoSvg("24", "24")
+		<span>Google</span>
+	</button>
+}

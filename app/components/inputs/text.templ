@@ -1,0 +1,20 @@
+package inputs
+
+import "date-rate/app/components"
+
+var textInputProps = map[string]string{
+	"classes": "border-gray-400 rounded h-9",
+}
+
+func TextInput(name string, value string, props ...map[string]string) templ.Component {
+	switch len(props) {
+	case 1:
+		return text(name, value, components.SetProps(textInputProps, props[0]))
+	default:
+		return text(name, value, textInputProps)
+	}
+}
+
+templ text(name string, value string, props map[string]string) {
+	<input type="text" name={ name } value={ value } class={ props["classes"] }/>
+}

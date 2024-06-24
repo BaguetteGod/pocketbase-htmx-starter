@@ -1,0 +1,13 @@
+package dashboard
+
+import (
+	"date-rate/app/components/layouts"
+	"date-rate/app/components/inputs"
+)
+
+templ Dashboard() {
+	@layouts.App() {
+		Dashboard
+		@inputs.ButtonLogout()
+	}
+}

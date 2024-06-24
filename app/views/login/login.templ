@@ -1,0 +1,48 @@
+package login
+
+import (
+	"date-rate/app/components/inputs"
+	"date-rate/app/components/layouts"
+	"date-rate/app/components/urls"
+	"date-rate/app/forms"
+)
+
+templ LoginPage(form forms.LoginFormValue, err string) {
+	@layouts.Auth() {
+		<div id="login-section-div" class="flex flex-col gap-8 w-full max-w-xs">
+			<div class="flex flex-col">
+				<div class="font-semibold text-3xl flex">Sign in to your account</div>
+				<div class="flex gap-1">
+					<span class="text-gray-500">Not a member yet?</span>
+					@urls.Default("/register") {
+						Register for free
+					}
+				</div>
+			</div>
+			<form method="POST" action="/login" hx-boost="true" class="flex flex-col gap-4 text-gray-700">
+				@inputs.FormInputWrapper("email", err) {
+					Email address
+					@inputs.TextInput("email", form.Email)
+				}
+				@inputs.FormInputWrapper("password", err) {
+					Password
+					@inputs.PasswordInput("password")
+				}
+				<div class="flex justify-between items-center">
+					<label class="flex flex-row-reverse gap-2 items-center">
+						Remember me
+						@inputs.CheckboxInput()
+					</label>
+					@urls.Default("/forgot-password") {
+						Forgot password?
+					}
+				</div>
+				@inputs.FormInputWrapper("verified", err)
+				@inputs.Button(map[string]string{"type": "submit"}) {
+					Sign in
+				}
+				@inputs.ButtonGoogleSignIn()
+			</form>
+		</div>
+	}
+}

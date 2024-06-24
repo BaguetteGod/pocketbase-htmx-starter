@@ -1,0 +1,17 @@
+package email_verified
+
+import "date-rate/app/components/layouts"
+
+templ EmailVerifiedSuccessPage() {
+	@layouts.SuccesPage() {
+		<div class="flex flex-col p-4 text-white gap-4 items-center z-10 pb-40">
+			<h1 class="text-5xl font-bold">
+				Email verified
+			</h1>
+			<p class="text-slate-200 mt-2">
+				Your email has succesfully been verified, you can now login and start using the app.
+			</p>
+			<a href="/login" class="font-bold mt-3"><span aria-hidden="true">←&nbsp;</span>Sign in</a>
+		</div>
+	}
+}

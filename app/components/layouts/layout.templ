@@ -1,0 +1,41 @@
+package layouts
+
+import "date-rate/app/components/shared"
+
+templ App() {
+	@shared.Head()
+	<main class="w-screen h-screen overflow-hidden">
+		{ children... }
+	</main>
+}
+
+css authBackgroundImage() {
+	background-image: url("https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?q=80&w=2200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+}
+
+templ Auth() {
+	@App() {
+		<div class="w-full h-full flex">
+			<section class="w-full max-w-5xl h-full flex flex-col items-center justify-center">
+				{ children... }
+			</section>
+			<section class={ "hidden xl:block w-full h-full object-cover bg-center" , authBackgroundImage() }></section>
+		</div>
+	}
+}
+
+css registerSuccessBackgroundImage() {
+	background-image: url("https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?q=80&w=2200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+}
+
+templ SuccesPage() {
+	@App() {
+		<div
+			class={ "w-full h-full bg-cover bg-center bg-no-repeat flex justify-center items-center relative" ,
+    registerSuccessBackgroundImage() }
+		>
+			<div class="h-full w-full bg-gray-700 absolute opacity-50"></div>
+			{ children... }
+		</div>
+	}
+}

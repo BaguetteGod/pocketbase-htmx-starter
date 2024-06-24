@@ -1,0 +1,62 @@
+package register
+
+import (
+	"date-rate/app/components/inputs"
+	"date-rate/app/components/layouts"
+	"date-rate/app/components/urls"
+	"date-rate/app/forms"
+)
+
+templ RegisterPage(form forms.RegisterFormValue, err string) {
+	@layouts.Auth() {
+		<div id="login-section-div" class="flex flex-col gap-8 w-full max-w-xs">
+			<div class="flex flex-col">
+				<div class="font-semibold text-3xl flex">Sign up for an account</div>
+				<div class="flex gap-1">
+					<span class="text-gray-500">Already a member?</span>
+					@urls.Default("/login") {
+						Sign in
+					}
+				</div>
+			</div>
+			<form method="post" action="/register" hx-boost="true" class="flex flex-col gap-4 text-gray-700">
+				@inputs.FormInputWrapper("email", err) {
+					Email address
+					@inputs.TextInput("email", form.Email)
+				}
+				@inputs.FormInputWrapper("password", err) {
+					Password
+					@inputs.PasswordInput("password")
+				}
+				@inputs.FormInputWrapper("passwordConfirm", err) {
+					Confirm password
+					@inputs.PasswordInput("passwordConfirm")
+				}
+				@inputs.FormInputWrapper("username", err) {
+					Username
+					@inputs.TextInput("username", form.Username)
+				}
+				@inputs.Button(map[string]string{"type": "submit"}) {
+					Sign up
+				}
+				@inputs.ButtonGoogleSignIn()
+			</form>
+		</div>
+	}
+}
+
+css registerSuccessBackgroundImage() {
+	background-image: url("https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?q=80&w=2200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+}
+
+templ RegisterSuccessPage() {
+	@layouts.SuccesPage() {
+		<div class="flex flex-col p-4 text-white gap-4 items-center z-10 pb-40">
+			<h1 class="text-5xl font-bold">
+				Thanks for registering
+			</h1>
+			<p class="text-slate-200 mt-2">To start using DateRate, please confirm your email.</p>
+			<a href="/login" class="font-bold mt-3"><span aria-hidden="true">←&nbsp;</span>Sign in</a>
+		</div>
+	}
+}
