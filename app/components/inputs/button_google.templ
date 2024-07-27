@@ -1,22 +1,39 @@
 package inputs
 
-import "date-rate/app/components/svgs"
+import (
+	"date-rate/app/components/svgs"
+	"github.com/joho/godotenv"
+	"log"
+	"os"
+)
 
-templ ButtonGoogleSignIn() {
+func ButtonGoogleSignIn() templ.Component {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	appUrl := os.Getenv("APP_URL")
+	return buttonGoogleSignIn(appUrl)
+}
+
+templ buttonGoogleSignIn(appUrl string) {
+	@templ.JSONScript("appUrl", appUrl)
 	<script src="/dist/pocketbase/dist/pocketbase.umd.js"></script>
 	<script type="text/javascript">
-        const signInWithGoogle = async () => {
-            const pb = new PocketBase('http://127.0.0.1:8090');
-            const authData = await pb.collection('users').authWithOAuth2({provider: 'google'});
-            const response = await fetch('http://127.0.0.1:8090/login/oauth2', {
-                    method: 'POST',
-                    headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    body: JSON.stringify(authData),
-                })
-            location.reload();
-        }
+    const signInWithGoogle = async () => {
+        const appUrl = JSON.parse(document.getElementById('appUrl').textContent);
+        const pb = new PocketBase(appUrl);
+        const authData = await pb.collection('users').authWithOAuth2({provider: 'google'});
+        const response = await fetch(`${appUrl}/login/oauth2`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(authData),
+        })
+        location.reload();
+    }
     </script>
 	<button
 		type="button"

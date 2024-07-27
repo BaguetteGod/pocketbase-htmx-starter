@@ -1,13 +1,16 @@
 package dashboard
 
 import (
-	"date-rate/app/components/layouts"
 	"date-rate/app/components/inputs"
+	"date-rate/app/components/layouts"
+	"github.com/labstack/echo/v5"
 )
 
-templ Dashboard() {
-	@layouts.App() {
-		Dashboard
-		@inputs.ButtonLogout()
+templ Dashboard(c echo.Context) {
+	@layouts.Authenticated(c) {
+		<div class="flex flex-col">
+			Dashboard lmao
+			@inputs.ButtonLogout()
+		</div>
 	}
 }

@@ -1,12 +1,20 @@
 package layouts
 
-import "date-rate/app/components/shared"
+import (
+	"date-rate/app/components/layouts/sidebar"
+	"date-rate/app/components/shared"
+	"github.com/labstack/echo/v5"
+)
 
 templ App() {
-	@shared.Head()
-	<main class="w-screen h-screen overflow-hidden">
-		{ children... }
-	</main>
+	<html>
+		@shared.Head()
+		<body>
+			<main class="w-screen h-screen overflow-hidden">
+				{ children... }
+			</main>
+		</body>
+	</html>
 }
 
 css authBackgroundImage() {
@@ -38,4 +46,17 @@ templ SuccesPage() {
 			{ children... }
 		</div>
 	}
+}
+
+templ Authenticated(c echo.Context) {
+	<html class="h-full bg-white">
+		@shared.Head() {
+			<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+		}
+		<body class="h-full">
+			@sidebar.SidebarLayout(c) {
+				{ children... }
+			}
+		</body>
+	</html>
 }
