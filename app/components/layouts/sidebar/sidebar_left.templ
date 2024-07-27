@@ -1,0 +1,56 @@
+package sidebar
+
+import (
+	"date-rate/app/components/svgs"
+	"github.com/labstack/echo/v5"
+)
+
+templ sidebarLeft(c echo.Context) {
+	<!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
+	<div x-show="sidebarLeftOpen" class="relative z-50 lg:hidden" role="dialog" aria-modal="true">
+		<!-- Off-canvas menu backdrop, show/hide based on off-canvas menu state. -->
+		<div
+			x-show="sidebarLeftOpen"
+			x-transition:enter="transition-opacity ease-linear duration-300"
+			x-transition:enter-start="opacity-0"
+			x-transition:enter-end="opacity-100"
+			x-transition:leave="transition-opacity ease-linear duration-300"
+			x-transition:leave-start="opacity-100"
+			x-transition:leave-end="opacity-0"
+			class="fixed inset-0 bg-gray-900/80"
+			aria-hidden="true"
+		></div>
+		<div class="fixed inset-0 flex">
+			<!-- Off-canvas menu, show/hide based on off-canvas menu state. -->
+			<div
+				x-show="sidebarLeftOpen"
+				x-transition:enter="transition ease-in-out duration-300 transform"
+				x-transition:enter-start="-translate-x-full"
+				x-transition:enter-end="translate-x-0"
+				x-transition:leave="transition ease-in-out duration-300 transform"
+				x-transition:leave-start="translate-x-0"
+				x-transition:leave-end="-translate-x-full"
+				class="relative mr-16 flex w-full max-w-xs flex-1"
+			>
+				<!-- Close button, show/hide based on off-canvas menu state. -->
+				<div
+					x-show="sidebarLeftOpen"
+					x-transition:enter="ease-in-out duration-300"
+					x-transition:enter-start="opacity-0"
+					x-transition:enter-end="opacity-100"
+					x-transition:leave="ease-in-out duration-300"
+					x-transition:leave-start="opacity-100"
+					x-transition:leave-end="opacity-0"
+					class="absolute left-full top-0 flex w-16 justify-center pt-5"
+				>
+					<button x-on:click="toggleSidebarLeft" type="button" class="-m-2.5 p-2.5">
+						<span class="sr-only">Close sidebar</span>
+						@svgs.X("h-6 w-6 text-white")
+					</button>
+				</div>
+				<!-- Sidebar component, swap this element with another sidebar if you like -->
+				@sidebarContent(c)
+			</div>
+		</div>
+	</div>
+}

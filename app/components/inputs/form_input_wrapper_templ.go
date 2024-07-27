@@ -8,13 +8,10 @@ package inputs
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "github.com/tidwall/gjson"
-import "unicode"
-
-func titleCase(s string) string {
-	r := []rune(s)
-	return string(append([]rune{unicode.ToUpper(r[0])}, r[1:]...))
-}
+import (
+	"date-rate/app/lib"
+	"github.com/tidwall/gjson"
+)
 
 func FormInputWrapper(name string, err string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -41,7 +38,7 @@ func FormInputWrapper(name string, err string) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/form_input_wrapper.templ`, Line: 12, Col: 18}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/form_input_wrapper.templ`, Line: 9, Col: 18}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -61,9 +58,9 @@ func FormInputWrapper(name string, err string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(titleCase(gjson.Get(err, name).String()))
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(lib.TitleCase(gjson.Get(err, name).String()))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/form_input_wrapper.templ`, Line: 15, Col: 97}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/form_input_wrapper.templ`, Line: 12, Col: 101}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {

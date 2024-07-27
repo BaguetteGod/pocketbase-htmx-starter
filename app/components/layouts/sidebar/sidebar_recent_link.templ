@@ -1,0 +1,42 @@
+package sidebar
+
+import "github.com/labstack/echo/v5"
+
+type linkRecent struct {
+	href     string
+	linkName string
+}
+
+func (l *linkRecent) active(c echo.Context) bool {
+	url := c.Request().URL
+	return url.String() == l.href
+}
+
+func (l *linkRecent) getRecentLinkFirstLetter() string {
+	return string(l.linkName[0])
+}
+
+func setSidebarRecentLinkClasses(active bool) string {
+	baseClasses := "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 hover:bg-gray-50 hover:text-blue-600"
+
+	if active {
+		baseClasses = baseClasses + " text-blue-600 bg-gray-50 [&>span:first-child]:border-blue-600"
+	} else {
+		baseClasses = baseClasses + " text-gray-700 [&>span]:text-gray-400 [&>span:first-child]:border-gray-200"
+	}
+
+	return baseClasses
+}
+
+templ sidebarRecentLink(linkRecent linkRecent, c echo.Context) {
+	<li>
+		<a href={ templ.SafeURL(linkRecent.href) } class={ setSidebarRecentLinkClasses(linkRecent.active(c)) }>
+			<span
+				class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium group-hover:border-blue-600 group-hover:text-blue-600"
+			>
+				{ linkRecent.getRecentLinkFirstLetter() }
+			</span>
+			<span class="truncate group-hover:text-blue-600">{ linkRecent.linkName }</span>
+		</a>
+	</li>
+}

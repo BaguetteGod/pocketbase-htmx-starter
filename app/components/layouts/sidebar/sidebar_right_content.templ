@@ -1,0 +1,56 @@
+package sidebar
+
+import (
+	"date-rate/app/components/svgs"
+	"date-rate/app/lib"
+	"github.com/labstack/echo/v5"
+)
+
+var linksSidebarRight = []link{
+	{"/profile", "Profile", svgs.Home("h-6 w-6 shrink-0 group-hover:text-blue-600")},
+}
+
+templ sidebarRightContent(c echo.Context) {
+	<div
+		class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2 lg:pb-0 border-r-0 lg:border-r lg:border-gray-200"
+	>
+		<div class="flex h-16 shrink-0 items-center">
+			<img
+				class="h-8 w-auto"
+				src="https://tailwindui.com/img/logos/mark.svg?color=blue&shade=600"
+				alt="Your Company"
+			/>
+		</div>
+		<nav class="flex flex-1 flex-col">
+			<ul role="list" class="flex flex-1 flex-col gap-y-7">
+				<li>
+					<ul role="list" class="-mx-2 space-y-1">
+						for _, item := range linksSidebarRight {
+							@sidebarLink(item, c)
+						}
+						<li>
+							<form method="post" action="/logout" hx-boost="true">
+								<button
+									class="w-full flex gap-3 leading-6 font-medium p-2 rounded hover:bg-gray-50 group hover:text-blue-600"
+								>
+									@svgs.Logout("h-6 w-6 text-gray-400 group-hover:text-blue-600")
+									Logout
+								</button>
+							</form>
+						</li>
+					</ul>
+				</li>
+				<li class="-mx-6 mt-auto">
+					<a
+						href="/profile"
+						class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50"
+					>
+						<img class="h-8 w-8 rounded-full bg-gray-50 object-cover" src={ lib.GetAvatar(c) } alt=""/>
+						<span class="sr-only">Your profile</span>
+						<span aria-hidden="true">{ lib.GetUsername(c) }</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+}

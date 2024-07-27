@@ -51,7 +51,7 @@ func buttonGoogleSignIn(appUrl string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = svgs.GoogleLogoSvg("24", "24").Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = svgs.GoogleLogoSvg("h-6 w-6").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
