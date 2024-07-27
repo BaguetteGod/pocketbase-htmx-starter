@@ -135,6 +135,9 @@ func getAvatar(c echo.Context) string {
 	user := apis.RequestInfo(c).AuthRecord
 	filename := user.GetString("avatar")
 	avatar := fmt.Sprintf("%s/api/files/%s/%s/%s", appUrl, user.Collection().Id, user.Id, filename)
+	if filename == "" {
+		avatar = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
+	}
 	return avatar
 }
 

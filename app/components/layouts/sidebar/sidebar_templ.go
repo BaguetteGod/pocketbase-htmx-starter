@@ -98,6 +98,9 @@ func getAvatar(c echo.Context) string {
 	user := apis.RequestInfo(c).AuthRecord
 	filename := user.GetString("avatar")
 	avatar := fmt.Sprintf("%s/api/files/%s/%s/%s", appUrl, user.Collection().Id, user.Id, filename)
+	if filename == "" {
+		avatar = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
+	}
 	return avatar
 }
 
@@ -136,7 +139,7 @@ func sidebarContent(c echo.Context) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(getAvatar(c))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/layouts/sidebar/sidebar.templ`, Line: 204, Col: 82}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/layouts/sidebar/sidebar.templ`, Line: 207, Col: 82}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -149,7 +152,7 @@ func sidebarContent(c echo.Context) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(getUsername(c))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/layouts/sidebar/sidebar.templ`, Line: 206, Col: 47}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/layouts/sidebar/sidebar.templ`, Line: 209, Col: 47}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -225,7 +228,7 @@ func sidebarLink(link link, c echo.Context) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(link.linkName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/layouts/sidebar/sidebar.templ`, Line: 223, Col: 18}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/layouts/sidebar/sidebar.templ`, Line: 226, Col: 18}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
