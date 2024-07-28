@@ -11,7 +11,7 @@ import templruntime "github.com/a-h/templ/runtime"
 import "date-rate/app/components"
 
 var passwordInputProps = map[string]string{
-	"classes": "border-gray-400 rounded h-9",
+	"classes": "border-gray-400 rounded h-9 text-sm",
 }
 
 func PasswordInput(name string, props ...map[string]string) templ.Component {

@@ -47,11 +47,11 @@ func buttonGoogleSignIn(appUrl string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script src=\"/dist/pocketbase/dist/pocketbase.umd.js\"></script><script type=\"text/javascript\">\n    const signInWithGoogle = async () => {\n        const appUrl = JSON.parse(document.getElementById('appUrl').textContent);\n        const pb = new PocketBase(appUrl);\n        const authData = await pb.collection('users').authWithOAuth2({provider: 'google'});\n        const response = await fetch(`${appUrl}/login/oauth2`, {\n            method: 'POST',\n            headers: {\n                'Content-Type': 'application/json',\n            },\n            body: JSON.stringify(authData),\n        })\n        location.reload();\n    }\n    </script><button type=\"button\" onclick=\"signInWithGoogle()\" class=\"border border-gray-400 rounded flex gap-2 py-1.5 px-2 items-center justify-center font-medium focus:outline-1 focus:outline-offset-2 focus:outline-blue-400 text-gray-700\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script src=\"/dist/pocketbase/dist/pocketbase.umd.js\"></script><script type=\"text/javascript\">\n    const signInWithGoogle = async () => {\n        const appUrl = JSON.parse(document.getElementById('appUrl').textContent);\n        const pb = new PocketBase(appUrl);\n        const authData = await pb.collection('users').authWithOAuth2({provider: 'google'});\n        const response = await fetch(`${appUrl}/login/oauth2`, {\n            method: 'POST',\n            headers: {\n                'Content-Type': 'application/json',\n            },\n            body: JSON.stringify(authData),\n        })\n        location.reload();\n    }\n    </script><button type=\"button\" onclick=\"signInWithGoogle()\" class=\"border border-gray-400 rounded flex gap-2 py-2 px-3 items-center justify-center font-medium focus:outline-1 focus:outline-offset-2 focus:outline-blue-400 text-gray-700\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = svgs.GoogleLogoSvg("h-6 w-6").Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = svgs.GoogleLogoSvg("h-5 w-5").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

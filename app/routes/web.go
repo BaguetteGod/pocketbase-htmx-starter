@@ -21,6 +21,7 @@ func Init(e *core.ServeEvent, app *pocketbase.PocketBase) {
 	authenticatedGroup := e.Router.Group("", middleware.AuthGuard)
 	controllers.RegisterLogoutRoutes(e, *authenticatedGroup)
 	controllers.RegisterDashboardRoutes(e, *authenticatedGroup)
+	controllers.RegisterProfileRoutes(e, *authenticatedGroup)
 
 	notFoundGroup := e.Router.Group("/404")
 	controllers.RegisterNotFounRoutes(e, *notFoundGroup)

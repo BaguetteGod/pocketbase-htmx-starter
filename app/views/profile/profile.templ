@@ -1,0 +1,48 @@
+package profile
+
+import (
+	"date-rate/app/components/form_components"
+	"date-rate/app/components/inputs"
+	"date-rate/app/components/layouts"
+	"date-rate/app/forms"
+	"date-rate/app/lib"
+	"github.com/labstack/echo/v5"
+)
+
+templ Profile(c echo.Context, form forms.ProfileFormValue, err string) {
+	@layouts.Authenticated(c) {
+		@form_components.FormSection() {
+			@form_components.FormTitle("Personal Information", "Use a permanent address where you can receive email.")
+			@form_components.FormData() {
+				<form class="flex flex-col gap-6">
+					<div class="flex items-center gap-6">
+						<img class="object-cover rounded flex-none w-24 h-24" src={ lib.GetAvatar(c) }/>
+						<div class="flex flex-col gap-1">
+							<button
+								type="button"
+								class="px-3 py-2 rounded font-medium border border-gray-600 flex items-center justify-center hover:bg-gray-50"
+							>
+								Change
+								avatar
+							</button>
+							<p class="text-sm">JPG, GIF or PNG. 1mb max.</p>
+						</div>
+					</div>
+					@inputs.FormInputWrapper("username", err) {
+						Username
+						@inputs.TextInput("username", form.Username)
+					}
+					@inputs.FormInputWrapper("username", err) {
+						Email
+						@inputs.TextInput("email", form.Email)
+					}
+					<div>
+						@inputs.Button(map[string]string{"type": "submit"}) {
+							Save
+						}
+					</div>
+				</form>
+			}
+		}
+	}
+}

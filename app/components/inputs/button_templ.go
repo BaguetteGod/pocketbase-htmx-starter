@@ -11,7 +11,7 @@ import templruntime "github.com/a-h/templ/runtime"
 import "date-rate/app/components"
 
 var buttonStyles = map[string]string{
-	"solidBlue": `bg-blue-600 text-white py-1.5 px-2 flex items-center justify-center rounded hover:bg-blue-500
+	"solidBlue": `bg-blue-600 text-white py-2 px-3 flex items-center justify-center rounded hover:bg-blue-500
 font-medium focus:outline-1 focus:outline-offset-2 focus:outline-blue-600`,
 }
 
