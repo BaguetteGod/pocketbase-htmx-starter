@@ -1,6 +1,7 @@
 package main
 
 import (
+	"date-rate/app/pocketbase/extensions"
 	"date-rate/app/routes"
 	"log"
 
@@ -21,6 +22,7 @@ func main() {
 		e.Router.Static("/dist", "app/internal/assets/dist")
 
 		routes.Init(e, app)
+		extensions.SetPocketbaseExtensions(e, app)
 
 		return nil
 	})
