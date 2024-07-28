@@ -71,7 +71,7 @@ func SidebarLayout(c echo.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><button x-on:click=\"toggleSidebarRight\" href=\"#\"><span class=\"sr-only\">Your profile</span> <img class=\"h-8 w-8 rounded-full bg-gray-50 object-cover\" src=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><a href=\"/profile\"><span class=\"sr-only\">Your profile</span> <img class=\"h-8 w-8 rounded-full bg-gray-50 object-cover\" src=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -84,7 +84,7 @@ func SidebarLayout(c echo.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" alt=\"\"></button></div><main class=\"py-10 lg:pl-72\"><div class=\"px-4 sm:px-6 lg:px-8\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" alt=\"\"></a></div><main class=\"py-10 lg:pl-72\"><div class=\"px-4 sm:px-6 lg:px-8\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

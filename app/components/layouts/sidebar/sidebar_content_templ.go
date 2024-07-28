@@ -62,7 +62,7 @@ func sidebarContent(c echo.Context) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</ul></li><li class=\"hidden lg:block\"><ul role=\"list\" class=\"-mx-2 space-y-1\"><li><form method=\"post\" action=\"/logout\" hx-boost=\"true\" class=\"mb-0\"><button class=\"w-full flex gap-3 leading-6 font-medium p-2 rounded hover:bg-gray-50 group hover:text-blue-600 text-sm\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</ul></li><li><ul role=\"list\" class=\"-mx-2 space-y-1\"><li><form method=\"post\" action=\"/logout\" hx-boost=\"true\" class=\"mb-0\"><button class=\"w-full flex gap-3 leading-6 font-medium p-2 rounded hover:bg-gray-50 group hover:text-blue-600 text-sm\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

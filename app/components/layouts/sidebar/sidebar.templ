@@ -52,10 +52,10 @@ templ SidebarLayout(c echo.Context) {
 			<div class="flex-1 text-sm font-semibold leading-6 text-gray-900">
 				{ setBreadcrumb(c) }
 			</div>
-			<button x-on:click="toggleSidebarRight" href="#">
+			<a href="/profile">
 				<span class="sr-only">Your profile</span>
 				<img class="h-8 w-8 rounded-full bg-gray-50 object-cover" src={ lib.GetAvatar(c) } alt=""/>
-			</button>
+			</a>
 		</div>
 		<main class="py-10 lg:pl-72">
 			<div class="px-4 sm:px-6 lg:px-8">

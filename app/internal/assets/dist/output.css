@@ -1815,10 +1815,6 @@ body {
     z-index: 50;
   }
 
-  .lg\:block {
-    display: block;
-  }
-
   .lg\:flex {
     display: flex;
   }
