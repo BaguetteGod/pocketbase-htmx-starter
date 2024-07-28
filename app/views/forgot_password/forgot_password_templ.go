@@ -45,7 +45,7 @@ func ForgotPasswordPage(form forms.ForgotPasswordFormValue, err string) templ.Co
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"login-section-div\" class=\"flex flex-col gap-8 w-full max-w-xs\"><div class=\"flex flex-col\"><div class=\"font-semibold text-3xl flex\">Reset your password</div><div class=\"flex\"><div class=\"text-gray-500\">Enter your email address and we’ll send you a link to reset your password.</div></div></div><form method=\"post\" action=\"/forgot-password\" hx-boost=\"true\" class=\"flex flex-col gap-4 text-gray-700\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"login-section-div\" class=\"flex flex-col gap-8 w-full max-w-xs\"><div class=\"flex flex-col gap-2\"><div class=\"font-semibold text-3xl flex\">Reset your password</div><div class=\"flex\"><div class=\"text-gray-500\">Enter your email address and we’ll send you a link to reset your password.</div></div></div><form method=\"post\" action=\"/forgot-password\" hx-boost=\"true\" class=\"flex flex-col gap-4 text-gray-700\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -215,7 +215,7 @@ func ConfirmPasswordResetPage(form forms.ConfirmPasswordResetFormValue, err stri
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"login-section-div\" class=\"flex flex-col gap-8 w-full max-w-xs\"><div class=\"flex flex-col\"><div class=\"font-semibold text-3xl flex\">Confirm password reset</div></div><form method=\"post\" action=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"login-section-div\" class=\"flex flex-col gap-8 w-full max-w-xs\"><div class=\"flex flex-col gap-2\"><div class=\"font-semibold text-3xl flex\">Confirm password reset</div></div><form method=\"post\" action=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

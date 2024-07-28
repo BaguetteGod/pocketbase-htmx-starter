@@ -45,7 +45,7 @@ func RegisterPage(form forms.RegisterFormValue, err string) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"login-section-div\" class=\"flex flex-col gap-8 w-full max-w-xs\"><div class=\"flex flex-col\"><div class=\"font-semibold text-3xl flex\">Sign up for an account</div><div class=\"flex gap-1\"><span class=\"text-gray-500\">Already a member?</span>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"login-section-div\" class=\"flex flex-col gap-8 w-full max-w-xs\"><div class=\"flex flex-col gap-2\"><div class=\"font-semibold text-3xl flex\">Sign up for an account</div><div class=\"flex gap-1\"><span class=\"text-gray-500\">Already a member?</span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
