@@ -11,7 +11,8 @@ import templruntime "github.com/a-h/templ/runtime"
 import "date-rate/app/components"
 
 var passwordInputProps = map[string]string{
-	"classes": "border-gray-400 rounded h-9 text-sm",
+	"classes": `border-gray-400 rounded h-9 text-sm disabled:border-neutral-400 disabled:bg-neutral-100
+disabled:text-neutral-400 disabled:opacity-50`,
 }
 
 func PasswordInput(name string, props ...map[string]string) templ.Component {
@@ -53,7 +54,7 @@ func password(name string, props map[string]string) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/password.templ`, Line: 19, Col: 35}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/password.templ`, Line: 20, Col: 35}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {

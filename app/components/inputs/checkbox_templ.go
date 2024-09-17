@@ -11,7 +11,8 @@ import templruntime "github.com/a-h/templ/runtime"
 import "date-rate/app/components"
 
 var checkboxInputProps = map[string]string{
-	"classes": "border-gray-400 rounded text-sm",
+	"classes": `border-gray-400 rounded text-sm disabled:border-neutral-400 disabled:bg-neutral-100
+disabled:text-neutral-400 disabled:opacity-50`,
 }
 
 func CheckboxInput(props ...map[string]string) templ.Component {

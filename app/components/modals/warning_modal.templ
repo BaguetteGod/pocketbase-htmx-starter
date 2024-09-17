@@ -1,0 +1,33 @@
+package modals
+
+import "date-rate/app/components/svgs"
+
+templ WarningModal(buttonText string, warningTitle string, warningDescription string) {
+	@GeneralModal(buttonText) {
+		<div class="sm:flex sm:items-start">
+			<div
+				class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
+			>
+				@svgs.ExclamationTriangle()
+			</div>
+			<div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+				<h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
+					{ warningTitle }
+				</h3>
+				<div class="mt-2">
+					<p class="text-sm text-gray-500">
+						{ warningDescription }
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="bg-gray-50 -mx-4 -mb-4 sm:-mx-6 sm:-mb-4 px-4 py-3 mt-4 sm:flex sm:flex-row-reverse sm:px-6">
+			{ children... }
+			<button
+				x-on:click="closeModal()"
+				type="button"
+				class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+			>Cancel</button>
+		</div>
+	}
+}

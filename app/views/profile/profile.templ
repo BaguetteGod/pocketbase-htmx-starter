@@ -4,6 +4,7 @@ import (
 	"date-rate/app/components/form_components"
 	"date-rate/app/components/inputs"
 	"date-rate/app/components/layouts"
+	"date-rate/app/components/modals"
 	"date-rate/app/forms"
 	"date-rate/app/lib"
 	"github.com/labstack/echo/v5"
@@ -18,14 +19,10 @@ templ Profile(c echo.Context, form forms.ProfileFormValue, err string) {
 					<div class="flex items-center gap-6">
 						<img class="object-cover rounded flex-none w-24 h-24" src={ lib.GetAvatar(c) }/>
 						<div class="flex flex-col gap-1">
-							<button
-								type="button"
-								class="px-3 py-2 rounded font-medium border border-gray-600 flex items-center justify-center hover:bg-gray-50"
-							>
-								Change
-								avatar
-							</button>
-							<p class="text-sm">JPG, GIF or PNG. 1mb max.</p>
+							@modals.GeneralModal("Change avatar") {
+								Content
+							}
+							<p class="text-sm">JPG, GIF or PNG, 1MB max.</p>
 						</div>
 					</div>
 					@inputs.FormInputWrapper("username", err) {
