@@ -1,9 +1,9 @@
 package layouts
 
 import (
-	"date-rate/app/components/layouts/sidebar"
-	"date-rate/app/components/shared"
 	"github.com/labstack/echo/v5"
+	"pb-starter/app/components/layouts/sidebar"
+	"pb-starter/app/components/shared"
 )
 
 templ App() {
@@ -48,15 +48,25 @@ templ LayoutBackgroundImage() {
 	}
 }
 
-templ Authenticated(c echo.Context) {
-	<html class="h-full bg-white">
+templ AppAuthenticatedBase() {
+	<html>
 		@shared.Head() {
-			<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+			<script src="https://unpkg.com/htmx.org@latest/dist/ext/alpine-morph.js"></script>
+			<!-- Alpine Plugins -->
+			<script defer src="https://unpkg.com/@alpinejs/morph@3.x.x/dist/cdn.min.js"></script>
+			<!-- Alpine Core -->
+			<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 		}
 		<body class="h-full text-sm">
-			@sidebar.SidebarLayout(c) {
-				{ children... }
-			}
+			{ children... }
 		</body>
 	</html>
+}
+
+templ Authenticated(c echo.Context) {
+	@AppAuthenticatedBase() {
+		@sidebar.SidebarLayout(c) {
+			{ children... }
+		}
+	}
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/pocketbase/pocketbase/core"
 )
 
-func ValidateUserPassword(e *core.ServeEvent, password string) validation.RuleFunc {
+func ValidateUserPasswordByEmail(e *core.ServeEvent, password string) validation.RuleFunc {
 	return func(value interface{}) error {
 		s, _ := value.(string)
 		user, _ := e.App.Dao().FindAuthRecordByEmail("users", s)

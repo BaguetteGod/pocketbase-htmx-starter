@@ -1,4 +1,4 @@
-module date-rate
+module pb-starter
 
 go 1.21.5
 

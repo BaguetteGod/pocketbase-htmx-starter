@@ -1,7 +1,7 @@
 package forms
 
 import (
-	"date-rate/app/forms/validation_rules"
+	"pb-starter/app/forms/validation_rules"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/labstack/echo/v5"

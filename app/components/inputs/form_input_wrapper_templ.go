@@ -9,8 +9,8 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"date-rate/app/lib"
 	"github.com/tidwall/gjson"
+	"pb-starter/app/lib"
 )
 
 func FormInputWrapper(name string, err string) templ.Component {

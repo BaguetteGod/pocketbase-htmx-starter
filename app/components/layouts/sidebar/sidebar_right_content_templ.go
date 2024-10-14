@@ -9,9 +9,9 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"date-rate/app/components/svgs"
-	"date-rate/app/lib"
 	"github.com/labstack/echo/v5"
+	"pb-starter/app/components/svgs"
+	"pb-starter/app/lib"
 )
 
 var linksSidebarRight = []link{
@@ -36,7 +36,7 @@ func sidebarRightContent(c echo.Context) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2 lg:pb-0 border-r-0 lg:border-r lg:border-gray-200\"><div class=\"flex h-16 shrink-0 items-center\"><img class=\"h-8 w-auto\" src=\"https://tailwindui.com/img/logos/mark.svg?color=blue&amp;shade=600\" alt=\"Your Company\"></div><nav class=\"flex flex-1 flex-col\"><ul role=\"list\" class=\"flex flex-1 flex-col gap-y-7\"><li><ul role=\"list\" class=\"-mx-2 space-y-1\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2 lg:pb-0 border-r-0 lg:border-r lg:border-gray-200\"><div class=\"flex h-16 shrink-0 items-center\"><img class=\"h-8 w-auto\" src=\"https://tailwindui.com/plus/img/logos/mark.svg?color=blue&amp;shade=600\" alt=\"Your Company\"></div><nav class=\"flex flex-1 flex-col\"><ul role=\"list\" class=\"flex flex-1 flex-col gap-y-7\"><li><ul role=\"list\" class=\"-mx-2 space-y-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

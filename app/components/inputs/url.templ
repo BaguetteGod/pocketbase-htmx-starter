@@ -1,0 +1,14 @@
+package inputs
+
+import "cmp"
+
+type Url struct {
+	Route   templ.SafeURL
+	Classes string
+}
+
+templ (ui Url) Comp() {
+	<a href={ ui.Route } class={ cmp.Or(ui.Classes, UrlBlueClasses) }>
+		{ children... }
+	</a>
+}

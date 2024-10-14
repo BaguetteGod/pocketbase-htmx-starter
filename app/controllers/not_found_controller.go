@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"date-rate/app/lib"
-	notfound "date-rate/app/views/not_found"
+	"pb-starter/app/lib"
+	notfound "pb-starter/app/views/not_found"
 
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase/core"

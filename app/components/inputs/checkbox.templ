@@ -1,21 +1,12 @@
 package inputs
 
-import "date-rate/app/components"
+import "cmp"
 
-var checkboxInputProps = map[string]string{
-	"classes": `border-gray-400 rounded text-sm disabled:border-neutral-400 disabled:bg-neutral-100
-disabled:text-neutral-400 disabled:opacity-50`,
+type Checkbox struct {
+	Name    string
+	Classes string
 }
 
-func CheckboxInput(props ...map[string]string) templ.Component {
-	switch len(props) {
-	case 1:
-		return checkbox(components.SetProps(checkboxInputProps, props[0]))
-	default:
-		return checkbox(checkboxInputProps)
-	}
-}
-
-templ checkbox(props map[string]string) {
-	<input type="checkbox" class={ props["classes"] }/>
+templ (ci Checkbox) Comp() {
+	<input type="checkbox" name={ ci.Name } class={ cmp.Or(ci.Classes, CheckboxInputClasses) }/>
 }

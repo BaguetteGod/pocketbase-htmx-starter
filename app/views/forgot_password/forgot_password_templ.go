@@ -9,10 +9,9 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"date-rate/app/components/inputs"
-	"date-rate/app/components/layouts"
-	"date-rate/app/components/urls"
-	"date-rate/app/forms"
+	"pb-starter/app/components/inputs"
+	"pb-starter/app/components/layouts"
+	"pb-starter/app/forms"
 )
 
 func ForgotPasswordPage(form forms.ForgotPasswordFormValue, err string) templ.Component {
@@ -65,7 +64,7 @@ func ForgotPasswordPage(form forms.ForgotPasswordFormValue, err string) templ.Co
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = inputs.TextInput("email", form.Email).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = inputs.Text{Name: "email", Value: form.Email}.Comp().Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -97,7 +96,7 @@ func ForgotPasswordPage(form forms.ForgotPasswordFormValue, err string) templ.Co
 				}
 				return templ_7745c5c3_Err
 			})
-			templ_7745c5c3_Err = urls.Default("/login").Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = inputs.Url{Route: "/login"}.Comp().Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -123,7 +122,7 @@ func ForgotPasswordPage(form forms.ForgotPasswordFormValue, err string) templ.Co
 				}
 				return templ_7745c5c3_Err
 			})
-			templ_7745c5c3_Err = inputs.Button(map[string]string{"type": "submit"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = inputs.Button{Type: "submit"}.Comp().Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -244,7 +243,7 @@ func ConfirmPasswordResetPage(form forms.ConfirmPasswordResetFormValue, err stri
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = inputs.PasswordInput("password").Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = inputs.Password{Name: "password"}.Comp().Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -270,7 +269,7 @@ func ConfirmPasswordResetPage(form forms.ConfirmPasswordResetFormValue, err stri
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = inputs.PasswordInput("passwordConfirm").Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = inputs.Password{Name: "passwordConfirm"}.Comp().Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -302,7 +301,7 @@ func ConfirmPasswordResetPage(form forms.ConfirmPasswordResetFormValue, err stri
 				}
 				return templ_7745c5c3_Err
 			})
-			templ_7745c5c3_Err = urls.Default("/login").Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = inputs.Url{Route: "/login"}.Comp().Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -329,7 +328,7 @@ func ConfirmPasswordResetPage(form forms.ConfirmPasswordResetFormValue, err stri
 				var templ_7745c5c3_Var15 string
 				templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(form.Token)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/forgot_password/forgot_password.templ`, Line: 83, Col: 67}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/forgot_password/forgot_password.templ`, Line: 82, Col: 67}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 				if templ_7745c5c3_Err != nil {
@@ -363,7 +362,7 @@ func ConfirmPasswordResetPage(form forms.ConfirmPasswordResetFormValue, err stri
 				}
 				return templ_7745c5c3_Err
 			})
-			templ_7745c5c3_Err = inputs.Button(map[string]string{"type": "submit"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var16), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = inputs.Button{Type: "submit"}.Comp().Render(templ.WithChildren(ctx, templ_7745c5c3_Var16), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

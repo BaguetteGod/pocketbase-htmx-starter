@@ -1,8 +1,8 @@
 package main
 
 import (
-	"date-rate/app/pocketbase/extensions"
-	"date-rate/app/routes"
+	"pb-starter/app/pocketbase/extensions"
+	"pb-starter/app/routes"
 	"log"
 
 	"github.com/joho/godotenv"

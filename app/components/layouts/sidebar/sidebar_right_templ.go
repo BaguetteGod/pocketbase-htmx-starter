@@ -9,8 +9,8 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"date-rate/app/components/svgs"
 	"github.com/labstack/echo/v5"
+	"pb-starter/app/components/svgs"
 )
 
 func sidebarRight(c echo.Context) templ.Component {

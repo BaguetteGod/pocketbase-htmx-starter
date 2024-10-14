@@ -9,8 +9,8 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"date-rate/app/components/layouts"
 	"github.com/labstack/echo/v5"
+	"pb-starter/app/components/layouts"
 )
 
 func Dashboard(c echo.Context) templ.Component {

@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"bytes"
-	"date-rate/app/forms"
-	"date-rate/app/lib"
-	"date-rate/app/views/register"
+	"pb-starter/app/forms"
+	"pb-starter/app/lib"
+	"pb-starter/app/views/register"
 	"encoding/json"
 	"fmt"
 	"log"

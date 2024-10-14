@@ -9,10 +9,9 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"date-rate/app/components/inputs"
-	"date-rate/app/components/layouts"
-	"date-rate/app/components/urls"
-	"date-rate/app/forms"
+	"pb-starter/app/components/inputs"
+	"pb-starter/app/components/layouts"
+	"pb-starter/app/forms"
 )
 
 func LoginPage(form forms.LoginFormValue, err string) templ.Component {
@@ -67,7 +66,7 @@ func LoginPage(form forms.LoginFormValue, err string) templ.Component {
 				}
 				return templ_7745c5c3_Err
 			})
-			templ_7745c5c3_Err = urls.Default("/register").Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = inputs.Url{Route: "/register"}.Comp().Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -91,7 +90,10 @@ func LoginPage(form forms.LoginFormValue, err string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = inputs.TextInput("email", form.Email).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = inputs.Text{
+					Name:  "email",
+					Value: form.Email,
+				}.Comp().Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -117,7 +119,7 @@ func LoginPage(form forms.LoginFormValue, err string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = inputs.PasswordInput("password").Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = inputs.Password{Name: "password"}.Comp().Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -131,7 +133,7 @@ func LoginPage(form forms.LoginFormValue, err string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = inputs.CheckboxInput().Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = inputs.Checkbox{Name: "Remember me"}.Comp().Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -157,7 +159,7 @@ func LoginPage(form forms.LoginFormValue, err string) templ.Component {
 				}
 				return templ_7745c5c3_Err
 			})
-			templ_7745c5c3_Err = urls.Default("/forgot-password").Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = inputs.Url{Route: "/forgot-password"}.Comp().Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -187,7 +189,7 @@ func LoginPage(form forms.LoginFormValue, err string) templ.Component {
 				}
 				return templ_7745c5c3_Err
 			})
-			templ_7745c5c3_Err = inputs.Button(map[string]string{"type": "submit"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = inputs.Button{Type: "submit"}.Comp().Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

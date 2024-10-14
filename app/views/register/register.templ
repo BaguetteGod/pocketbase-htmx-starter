@@ -1,10 +1,9 @@
 package register
 
 import (
-	"date-rate/app/components/inputs"
-	"date-rate/app/components/layouts"
-	"date-rate/app/components/urls"
-	"date-rate/app/forms"
+	"pb-starter/app/components/inputs"
+	"pb-starter/app/components/layouts"
+	"pb-starter/app/forms"
 )
 
 templ RegisterPage(form forms.RegisterFormValue, err string) {
@@ -14,7 +13,7 @@ templ RegisterPage(form forms.RegisterFormValue, err string) {
 				<div class="font-semibold text-3xl flex">Sign up for an account</div>
 				<div class="flex gap-1">
 					<span class="text-gray-500">Already a member?</span>
-					@urls.Default("/login") {
+					@inputs.Url{Route: "/login"}.Comp() {
 						Sign in
 					}
 				</div>
@@ -22,21 +21,21 @@ templ RegisterPage(form forms.RegisterFormValue, err string) {
 			<form method="post" action="/register" hx-boost="true" class="flex flex-col gap-4 text-gray-700">
 				@inputs.FormInputWrapper("email", err) {
 					Email address
-					@inputs.TextInput("email", form.Email)
+					@inputs.Text{Name: "email", Value: form.Email}.Comp()
 				}
 				@inputs.FormInputWrapper("password", err) {
 					Password
-					@inputs.PasswordInput("password")
+					@inputs.Password{Name: "password"}.Comp()
 				}
 				@inputs.FormInputWrapper("passwordConfirm", err) {
 					Confirm password
-					@inputs.PasswordInput("passwordConfirm")
+					@inputs.Password{Name: "passwordConfirm"}.Comp()
 				}
 				@inputs.FormInputWrapper("username", err) {
 					Username
-					@inputs.TextInput("username", form.Username)
+					@inputs.Text{Name: "username", Value: form.Username}.Comp()
 				}
-				@inputs.Button(map[string]string{"type": "submit"}) {
+				@inputs.Button{Type: "submit"}.Comp() {
 					Sign up
 				}
 				@inputs.ButtonGoogleSignIn()

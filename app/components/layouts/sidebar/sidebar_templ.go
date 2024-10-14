@@ -9,8 +9,8 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"date-rate/app/lib"
 	"github.com/labstack/echo/v5"
+	"pb-starter/app/lib"
 	"strings"
 )
 

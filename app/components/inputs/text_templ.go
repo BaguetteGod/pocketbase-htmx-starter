@@ -8,23 +8,18 @@ package inputs
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "date-rate/app/components"
+import "cmp"
 
-var textInputProps = map[string]string{
-	"classes": `border-gray-400 rounded h-9 text-sm disabled:border-neutral-400 disabled:bg-neutral-100
-disabled:text-neutral-400 disabled:opacity-50`,
+type Text struct {
+	Name     string
+	Value    string
+	Classes  string
+	Hint     string
+	Disabled bool
+	Readonly bool
 }
 
-func TextInput(name string, value string, props ...map[string]string) templ.Component {
-	switch len(props) {
-	case 1:
-		return text(name, value, components.SetProps(textInputProps, props[0]))
-	default:
-		return text(name, value, textInputProps)
-	}
-}
-
-func text(name string, value string, props map[string]string) templ.Component {
+func (ti Text) Comp() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -42,7 +37,7 @@ func text(name string, value string, props map[string]string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var2 = []any{props["classes"]}
+		var templ_7745c5c3_Var2 = []any{cmp.Or(ti.Classes, TextInputClasses)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -52,9 +47,9 @@ func text(name string, value string, props map[string]string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
-		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(name)
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(ti.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/text.templ`, Line: 20, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/text.templ`, Line: 17, Col: 16}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -65,9 +60,9 @@ func text(name string, value string, props map[string]string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
-		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(value)
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(ti.Value)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/text.templ`, Line: 20, Col: 47}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/text.templ`, Line: 18, Col: 18}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -86,9 +81,44 @@ func text(name string, value string, props map[string]string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
+		}
+		if ti.Disabled {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" disabled")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		if ti.Readonly {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" readonly")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("> ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if ti.Hint != "" {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"text-xs font-normal text-gray-500\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var6 string
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(ti.Hint)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/text.templ`, Line: 28, Col: 58}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
 		return templ_7745c5c3_Err
 	})

@@ -1,0 +1,90 @@
+package inputs
+
+import "fmt"
+
+type Avatar struct {
+	Name     string
+	Value    string
+	Classes  string
+	Disabled bool
+}
+
+templ (ai Avatar) Comp() {
+	<div
+		x-data="{
+            file: null,
+            imageUrl: null,
+
+            setFile(event) {
+                this.file = event.target.files[0]
+                this.fileToDataUrl()
+            },
+
+            fileToDataUrl() {
+                if (!this.file) return
+
+                const reader = new FileReader()
+
+                reader.readAsDataURL(this.file)
+                reader.onload = (e) => {
+                    this.imageUrl = e.target.result
+                }
+            },
+
+            drop(event) {
+                if (!event.dataTransfer.items) return
+
+                const droppedItem = event.dataTransfer.items[0]
+                if (droppedItem.kind !== 'file') return
+
+                const uploadedFile = droppedItem.getAsFile()
+                if (!uploadedFile.type.match('image/jpeg|image/png|image/gif|image/webp')) return
+
+                this.file = uploadedFile
+                this.fileToDataUrl()
+                this.setFileOnInput(this.file)
+            },
+
+            setFileOnInput(file) {
+                const dataTransfer = new DataTransfer()
+                dataTransfer.items.add(file)
+                this.$refs.avatarFileInput.files = dataTransfer.files
+            },
+        }"
+		class="flex flex-col gap-6 items-center justify-center"
+	>
+
+        <div
+            x-on:drop.prevent="drop; $el.classList.remove('!border-blue-600')"
+            x-on:dragover.prevent="$el.classList.add('!border-blue-600')"
+            x-on:dragleave.prevent="$el.classList.remove('!border-blue-600')"
+            class="border-2 border-gray-200 border-dashed rounded p-16"
+        >
+            <template x-if="!file">
+                <img class="object-cover rounded-full flex-none w-24 h-24" src={ ai.Value }/>
+            </template>
+
+            <template x-if="file">
+                <img class="object-cover rounded-full flex-none w-24 h-24" :src="imageUrl"/>
+            </template>
+        </div>
+
+
+		<label for={ ai.Name } class={ fmt.Sprintf("%s w-fit cursor-pointer", ButtonOutlineGrayClasses) }>
+			Select a new image
+			<input
+                x-ref="avatarFileInput"
+				x-on:change="setFile"
+				type="file"
+				name={ ai.Name }
+                id={ ai.Name }
+                value={ ai.Value }
+				class="sr-only"
+				accept="image/jpeg, image/png, image/gif, image/webp"
+				if ai.Disabled {
+					disabled
+				}
+			/>
+		</label>
+	</div>
+}

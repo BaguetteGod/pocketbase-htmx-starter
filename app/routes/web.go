@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"date-rate/app/controllers"
-	middleware "date-rate/app/middelware"
+	"pb-starter/app/controllers"
+	middleware "pb-starter/app/middelware"
 
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase"
@@ -21,7 +21,7 @@ func Init(e *core.ServeEvent, app *pocketbase.PocketBase) {
 	authenticatedGroup := e.Router.Group("", middleware.AuthGuard)
 	controllers.RegisterLogoutRoutes(e, *authenticatedGroup)
 	controllers.RegisterDashboardRoutes(e, *authenticatedGroup)
-	controllers.RegisterProfileRoutes(e, *authenticatedGroup)
+	controllers.RegisterProfileRoutes(e, *authenticatedGroup, app)
 
 	notFoundGroup := e.Router.Group("/404")
 	controllers.RegisterNotFounRoutes(e, *notFoundGroup)

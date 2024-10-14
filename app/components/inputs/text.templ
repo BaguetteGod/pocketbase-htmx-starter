@@ -1,21 +1,30 @@
 package inputs
 
-import "date-rate/app/components"
+import "cmp"
 
-var textInputProps = map[string]string{
-	"classes": `border-gray-400 rounded h-9 text-sm disabled:border-neutral-400 disabled:bg-neutral-100
-disabled:text-neutral-400 disabled:opacity-50`,
+type Text struct {
+	Name     string
+	Value    string
+	Classes  string
+	Hint     string
+	Disabled bool
+	Readonly bool
 }
 
-func TextInput(name string, value string, props ...map[string]string) templ.Component {
-	switch len(props) {
-	case 1:
-		return text(name, value, components.SetProps(textInputProps, props[0]))
-	default:
-		return text(name, value, textInputProps)
+templ (ti Text) Comp() {
+	<input
+		type="text"
+		name={ ti.Name }
+		value={ ti.Value }
+		class={ cmp.Or(ti.Classes, TextInputClasses) }
+		if ti.Disabled {
+			disabled
+		}
+		if ti.Readonly {
+			readonly
+		}
+	/>
+	if ti.Hint != "" {
+		<div class="text-xs font-normal text-gray-500">{ ti.Hint }</div>
 	}
-}
-
-templ text(name string, value string, props map[string]string) {
-	<input type="text" name={ name } value={ value } class={ props["classes"] }/>
 }

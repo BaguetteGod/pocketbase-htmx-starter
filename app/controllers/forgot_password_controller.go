@@ -2,14 +2,14 @@ package controllers
 
 import (
 	"bytes"
-	"date-rate/app/forms"
-	"date-rate/app/lib"
-	"date-rate/app/views/forgot_password"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"pb-starter/app/forms"
+	"pb-starter/app/lib"
+	"pb-starter/app/views/forgot_password"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v5"

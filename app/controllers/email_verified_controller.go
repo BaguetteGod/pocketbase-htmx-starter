@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"date-rate/app/lib"
-	"date-rate/app/views/email_verified"
+	"pb-starter/app/lib"
+	"pb-starter/app/views/email_verified"
 
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase/core"

@@ -8,23 +8,15 @@ package inputs
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "date-rate/app/components"
+import "cmp"
 
-var passwordInputProps = map[string]string{
-	"classes": `border-gray-400 rounded h-9 text-sm disabled:border-neutral-400 disabled:bg-neutral-100
-disabled:text-neutral-400 disabled:opacity-50`,
+type Password struct {
+	Name     string
+	Classes  string
+	Disabled bool
 }
 
-func PasswordInput(name string, props ...map[string]string) templ.Component {
-	switch len(props) {
-	case 1:
-		return password(name, components.SetProps(passwordInputProps, props[0]))
-	default:
-		return password(name, passwordInputProps)
-	}
-}
-
-func password(name string, props map[string]string) templ.Component {
+func (pi Password) Comp() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -42,7 +34,7 @@ func password(name string, props map[string]string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var2 = []any{props["classes"]}
+		var templ_7745c5c3_Var2 = []any{cmp.Or(pi.Classes, PasswordInputClasses)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -52,9 +44,9 @@ func password(name string, props map[string]string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
-		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(name)
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(pi.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/password.templ`, Line: 20, Col: 35}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/password.templ`, Line: 14, Col: 16}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -73,7 +65,17 @@ func password(name string, props map[string]string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if pi.Disabled {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" disabled")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

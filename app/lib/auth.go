@@ -1,7 +1,7 @@
 package lib
 
 import (
-	middleware "date-rate/app/middelware"
+	middleware "pb-starter/app/middelware"
 	"fmt"
 	"net/http"
 

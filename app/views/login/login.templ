@@ -1,10 +1,9 @@
 package login
 
 import (
-	"date-rate/app/components/inputs"
-	"date-rate/app/components/layouts"
-	"date-rate/app/components/urls"
-	"date-rate/app/forms"
+	"pb-starter/app/components/inputs"
+	"pb-starter/app/components/layouts"
+	"pb-starter/app/forms"
 )
 
 templ LoginPage(form forms.LoginFormValue, err string) {
@@ -14,7 +13,7 @@ templ LoginPage(form forms.LoginFormValue, err string) {
 				<div class="font-semibold text-3xl flex">Sign in to your account</div>
 				<div class="flex gap-1">
 					<span class="text-gray-500">Not a member yet?</span>
-					@urls.Default("/register") {
+					@inputs.Url{Route: "/register"}.Comp() {
 						Register for free
 					}
 				</div>
@@ -22,23 +21,26 @@ templ LoginPage(form forms.LoginFormValue, err string) {
 			<form method="POST" action="/login" hx-boost="true" class="flex flex-col gap-4 text-gray-700">
 				@inputs.FormInputWrapper("email", err) {
 					Email address
-					@inputs.TextInput("email", form.Email)
+					@inputs.Text{
+						Name:  "email",
+						Value: form.Email,
+					}.Comp()
 				}
 				@inputs.FormInputWrapper("password", err) {
 					Password
-					@inputs.PasswordInput("password")
+					@inputs.Password{Name: "password"}.Comp()
 				}
 				<div class="flex justify-between items-center">
 					<label class="flex flex-row-reverse gap-2 items-center">
 						Remember me
-						@inputs.CheckboxInput()
+						@inputs.Checkbox{Name: "Remember me"}.Comp()
 					</label>
-					@urls.Default("/forgot-password") {
+					@inputs.Url{Route: "/forgot-password"}.Comp() {
 						Forgot password?
 					}
 				</div>
 				@inputs.FormInputWrapper("verified", err)
-				@inputs.Button(map[string]string{"type": "submit"}) {
+				@inputs.Button{Type: "submit"}.Comp() {
 					Sign in
 				}
 				@inputs.ButtonGoogleSignIn()

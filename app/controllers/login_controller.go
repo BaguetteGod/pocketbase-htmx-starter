@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"date-rate/app/forms"
-	"date-rate/app/lib"
-	"date-rate/app/views/login"
 	"encoding/json"
+	"pb-starter/app/forms"
+	"pb-starter/app/lib"
+	"pb-starter/app/views/login"
 
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase/core"
@@ -54,6 +54,6 @@ func RegisterLoginRoutes(e *core.ServeEvent, group echo.Group) {
 
 		lib.SetCookie(c, json_map["token"].(string))
 
-		return c.Redirect(303, "/login")
+		return c.Redirect(302, "/login")
 	})
 }

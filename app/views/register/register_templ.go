@@ -9,10 +9,9 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"date-rate/app/components/inputs"
-	"date-rate/app/components/layouts"
-	"date-rate/app/components/urls"
-	"date-rate/app/forms"
+	"pb-starter/app/components/inputs"
+	"pb-starter/app/components/layouts"
+	"pb-starter/app/forms"
 )
 
 func RegisterPage(form forms.RegisterFormValue, err string) templ.Component {
@@ -67,7 +66,7 @@ func RegisterPage(form forms.RegisterFormValue, err string) templ.Component {
 				}
 				return templ_7745c5c3_Err
 			})
-			templ_7745c5c3_Err = urls.Default("/login").Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = inputs.Url{Route: "/login"}.Comp().Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -91,7 +90,7 @@ func RegisterPage(form forms.RegisterFormValue, err string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = inputs.TextInput("email", form.Email).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = inputs.Text{Name: "email", Value: form.Email}.Comp().Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -117,7 +116,7 @@ func RegisterPage(form forms.RegisterFormValue, err string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = inputs.PasswordInput("password").Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = inputs.Password{Name: "password"}.Comp().Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -143,7 +142,7 @@ func RegisterPage(form forms.RegisterFormValue, err string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = inputs.PasswordInput("passwordConfirm").Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = inputs.Password{Name: "passwordConfirm"}.Comp().Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -169,7 +168,7 @@ func RegisterPage(form forms.RegisterFormValue, err string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = inputs.TextInput("username", form.Username).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = inputs.Text{Name: "username", Value: form.Username}.Comp().Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -197,7 +196,7 @@ func RegisterPage(form forms.RegisterFormValue, err string) templ.Component {
 				}
 				return templ_7745c5c3_Err
 			})
-			templ_7745c5c3_Err = inputs.Button(map[string]string{"type": "submit"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = inputs.Button{Type: "submit"}.Comp().Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

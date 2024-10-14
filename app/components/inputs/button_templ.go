@@ -8,28 +8,15 @@ package inputs
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "date-rate/app/components"
+import "cmp"
 
-var buttonStyles = map[string]string{
-	"solidBlue": `bg-blue-600 text-white py-2 px-3 flex items-center justify-center rounded hover:bg-blue-500
-font-medium focus:outline-1 focus:outline-offset-2 focus:outline-blue-600`,
+type Button struct {
+	Name    string
+	Type    string
+	Classes string
 }
 
-var buttonProps = map[string]string{
-	"style": "solidBlue",
-	"type":  "button",
-}
-
-func Button(props ...map[string]string) templ.Component {
-	switch len(props) {
-	case 1:
-		return button(components.SetProps(buttonProps, props[0]))
-	default:
-		return button(buttonProps)
-	}
-}
-
-func button(props map[string]string) templ.Component {
+func (bi Button) Comp() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -47,7 +34,7 @@ func button(props map[string]string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var2 = []any{buttonStyles[props["style"]]}
+		var templ_7745c5c3_Var2 = []any{cmp.Or(bi.Classes, ButtonSolidBlueClasses)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -57,9 +44,9 @@ func button(props map[string]string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
-		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(props["type"])
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(cmp.Or(bi.Type, "button"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/button.templ`, Line: 25, Col: 29}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/button.templ`, Line: 12, Col: 41}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
