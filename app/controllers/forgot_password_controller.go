@@ -77,7 +77,7 @@ func handleConfirmPasswordResetRequest(form forms.ConfirmPasswordResetFormValue)
 	}
 	defer resp.Body.Close()
 
-	if resp.Status != "204" {
+	if resp.StatusCode != 204 {
 		return resp
 	}
 
@@ -99,15 +99,14 @@ func RegisterForgotPasswordRoutes(e *core.ServeEvent, group echo.Group) {
 
 		handleForgotPasswordRequest(form)
 
-		return c.Redirect(302, "/forgot-password/success")
-	})
-
-	group.GET("/forgot-password/success", func(c echo.Context) error {
 		return lib.Render(c, forgot_password.ForgotPasswordSuccessPage())
 	})
 
 	group.GET("/confirm-password-reset/:token", func(c echo.Context) error {
 		token := c.PathParam("token")
+		if len(token) != 288 {
+			return c.Redirect(302, "/login")
+		}
 		form := forms.ConfirmPasswordResetFormValue{Token: token}
 
 		return lib.Render(c, forgot_password.ConfirmPasswordResetPage(form, ""))
@@ -130,10 +129,6 @@ func RegisterForgotPasswordRoutes(e *core.ServeEvent, group echo.Group) {
 			return lib.Render(c, forgot_password.ConfirmPasswordResetPage(form, string(formErrors)))
 		}
 
-		return c.Redirect(302, "/confirm-password-reset/success")
-	})
-
-	group.GET("/confirm-password-reset/success", func(c echo.Context) error {
 		return lib.Render(c, forgot_password.ConfirmPasswordSuccessPage())
 	})
 }

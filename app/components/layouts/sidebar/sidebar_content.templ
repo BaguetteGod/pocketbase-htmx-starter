@@ -1,9 +1,9 @@
 package sidebar
 
 import (
+	"github.com/labstack/echo/v5"
 	"pb-starter/app/components/svgs"
 	"pb-starter/app/lib"
-	"github.com/labstack/echo/v5"
 )
 
 var links = []link{
@@ -17,6 +17,7 @@ var linksRecent = []linkRecent{
 }
 
 templ sidebarContent(c echo.Context) {
+	<script src="/dist/pocketbase/dist/pocketbase.umd.js"></script>
 	<div
 		class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2 lg:pb-0 border-r-0 lg:border-r lg:border-gray-200"
 	>
@@ -49,6 +50,15 @@ templ sidebarContent(c echo.Context) {
 						<li>
 							<form method="post" action="/logout" hx-boost="true" class="mb-0">
 								<button
+									data-appurl={ lib.GetAppUrl() }
+									x-data="{
+                                        appUrl: $el.dataset.appurl,
+                                        logout() {
+                                            const pb = new PocketBase(this.appUrl)
+                                            pb.authStore.clear()
+                                        },
+                                    }"
+									x-on:click="logout()"
 									class="w-full flex gap-3 leading-6 font-medium p-2 rounded hover:bg-gray-50 group hover:text-blue-600 text-sm"
 								>
 									@svgs.Logout("h-6 w-6 text-gray-400 group-hover:text-blue-600")

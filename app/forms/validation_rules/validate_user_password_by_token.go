@@ -16,8 +16,8 @@ func ValidateUserPasswordByToken(e *core.ServeEvent, c echo.Context) validation.
 		tokenCookie, _ := c.Cookie(middleware.AuthCookieName)
 		user, _ := e.App.Dao().FindAuthRecordByToken(tokenCookie.Value, e.App.Settings().RecordAuthToken.Secret)
 
-		if !user.ValidatePassword(s) {
-			return errors.New("incorrect password")
+		if user == nil || !user.ValidatePassword(s) {
+			return errors.New("incorrect token or password")
 		}
 		return nil
 	}

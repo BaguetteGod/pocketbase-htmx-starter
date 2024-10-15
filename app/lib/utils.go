@@ -56,3 +56,12 @@ func TitleCase(s string) string {
 func GetCurrentUrlString(c echo.Context) string {
 	return c.Request().URL.String()
 }
+
+func GetAppUrl() string {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	return os.Getenv("APP_URL")
+}

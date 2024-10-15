@@ -31,10 +31,6 @@ templ LoginPage(form forms.LoginFormValue, err string) {
 					@inputs.Password{Name: "password"}.Comp()
 				}
 				<div class="flex justify-between items-center">
-					<label class="flex flex-row-reverse gap-2 items-center">
-						Remember me
-						@inputs.Checkbox{Name: "Remember me"}.Comp()
-					</label>
 					@inputs.Url{Route: "/forgot-password"}.Comp() {
 						Forgot password?
 					}

@@ -63,13 +63,13 @@ func handleRequestEmailChange(c echo.Context, email string) {
 	defer resp.Body.Close()
 }
 
-func handleConfirmEmailChangeRequest(form forms.ConfirmPasswordResetFormValue) *http.Response {
+func handleConfirmEmailChangeRequest(form forms.ConfirmEmailChangeForm) *http.Response {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
-	url := fmt.Sprintf("%s/api/collections/users/confirm-password-reset", os.Getenv("APP_URL"))
+	url := fmt.Sprintf("%s/api/collections/users/confirm-email-change", os.Getenv("APP_URL"))
 
 	jsonData, err := json.Marshal(form)
 	if err != nil {
@@ -93,7 +93,7 @@ func handleConfirmEmailChangeRequest(form forms.ConfirmPasswordResetFormValue) *
 	}
 	defer resp.Body.Close()
 
-	if resp.Status != "204" {
+	if resp.StatusCode != 204 {
 		return resp
 	}
 
@@ -132,6 +132,36 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 		}
 
 		return lib.Render(c, profile.Profile(c, form, "", user.Get("oauth") == true))
+	})
+
+	group.GET("/confirm-email-change/:token", func(c echo.Context) error {
+		token := c.PathParam("token")
+		if len(token) != 288 {
+			return c.Redirect(302, "/dashboard")
+		}
+		form := forms.ConfirmEmailChangeForm{Token: token}
+
+		return lib.Render(c, profile.ConfirmEmailChangePage(form, ""))
+	})
+
+	group.POST("/confirm-email-change/:token", func(c echo.Context) error {
+		form := forms.GetConfirmEmailChangeForm(c)
+		err := form.Validate(e, c)
+		if err != nil {
+			formErrors, _ := json.Marshal(err)
+			return lib.Render(c, profile.ConfirmEmailChangePage(form, string(formErrors)))
+		}
+
+		resp := handleConfirmEmailChangeRequest(form)
+		if resp != nil {
+			errorMap := map[string]interface{}{
+				"token": "Link is invalid or has expired",
+			}
+			formErrors, _ := json.Marshal(errorMap)
+			return lib.Render(c, profile.ConfirmEmailChangePage(form, string(formErrors)))
+		}
+
+		return lib.Render(c, profile.EmailChangedSuccessPage())
 	})
 
 	group.POST("/avatar", func(c echo.Context) error {

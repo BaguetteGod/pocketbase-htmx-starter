@@ -42,7 +42,7 @@ func sidebarContent(c echo.Context) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2 lg:pb-0 border-r-0 lg:border-r lg:border-gray-200\"><div class=\"flex h-16 shrink-0 items-center\"><img class=\"h-8 w-auto\" src=\"https://tailwindui.com/plus/img/logos/mark.svg?color=blue&amp;shade=600\" alt=\"Your Company\"></div><nav class=\"flex flex-1 flex-col\"><ul role=\"list\" class=\"flex flex-1 flex-col gap-y-7\"><li><ul role=\"list\" class=\"-mx-2 space-y-1\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script src=\"/dist/pocketbase/dist/pocketbase.umd.js\"></script><div class=\"flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2 lg:pb-0 border-r-0 lg:border-r lg:border-gray-200\"><div class=\"flex h-16 shrink-0 items-center\"><img class=\"h-8 w-auto\" src=\"https://tailwindui.com/plus/img/logos/mark.svg?color=blue&amp;shade=600\" alt=\"Your Company\"></div><nav class=\"flex flex-1 flex-col\"><ul role=\"list\" class=\"flex flex-1 flex-col gap-y-7\"><li><ul role=\"list\" class=\"-mx-2 space-y-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -62,7 +62,20 @@ func sidebarContent(c echo.Context) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</ul></li><li><ul role=\"list\" class=\"-mx-2 space-y-1\"><li><form method=\"post\" action=\"/logout\" hx-boost=\"true\" class=\"mb-0\"><button class=\"w-full flex gap-3 leading-6 font-medium p-2 rounded hover:bg-gray-50 group hover:text-blue-600 text-sm\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</ul></li><li><ul role=\"list\" class=\"-mx-2 space-y-1\"><li><form method=\"post\" action=\"/logout\" hx-boost=\"true\" class=\"mb-0\"><button data-appurl=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var2 string
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(lib.GetAppUrl())
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/layouts/sidebar/sidebar_content.templ`, Line: 53, Col: 38}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" x-data=\"{\n                                        appUrl: $el.dataset.appurl,\n                                        logout() {\n                                            const pb = new PocketBase(this.appUrl)\n                                            pb.authStore.clear()\n                                        },\n                                    }\" x-on:click=\"logout()\" class=\"w-full flex gap-3 leading-6 font-medium p-2 rounded hover:bg-gray-50 group hover:text-blue-600 text-sm\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -74,12 +87,12 @@ func sidebarContent(c echo.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var2 string
-		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(lib.GetAvatar(c))
+		var templ_7745c5c3_Var3 string
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(lib.GetAvatar(c))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/layouts/sidebar/sidebar_content.templ`, Line: 66, Col: 86}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/layouts/sidebar/sidebar_content.templ`, Line: 76, Col: 86}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -87,12 +100,12 @@ func sidebarContent(c echo.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var3 string
-		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(lib.GetUsername(c))
+		var templ_7745c5c3_Var4 string
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(lib.GetUsername(c))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/layouts/sidebar/sidebar_content.templ`, Line: 68, Col: 51}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/layouts/sidebar/sidebar_content.templ`, Line: 78, Col: 51}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -11,7 +11,7 @@ func ValidateUserPasswordByEmail(e *core.ServeEvent, password string) validation
 	return func(value interface{}) error {
 		s, _ := value.(string)
 		user, _ := e.App.Dao().FindAuthRecordByEmail("users", s)
-		if !user.ValidatePassword(password) {
+		if user == nil || !user.ValidatePassword(password) {
 			return errors.New("incorrect email or password")
 		}
 		return nil

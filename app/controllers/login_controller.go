@@ -22,6 +22,10 @@ func RegisterLoginRoutes(e *core.ServeEvent, group echo.Group) {
 	group.POST("/login", func(c echo.Context) error {
 		form := forms.GetLoginFormValue(c)
 		err := form.Validate(e)
+		if err != nil {
+			formErrors, _ := json.Marshal(err)
+			return lib.Render(c, login.LoginPage(form, string(formErrors)))
+		}
 
 		user, _ := e.App.Dao().FindAuthRecordByEmail("users", form.Email)
 		if !user.Verified() {
@@ -29,11 +33,6 @@ func RegisterLoginRoutes(e *core.ServeEvent, group echo.Group) {
 				"verified": "Please verify your email",
 			}
 			formErrors, _ := json.Marshal(errorMap)
-			return lib.Render(c, login.LoginPage(form, string(formErrors)))
-		}
-
-		if err != nil {
-			formErrors, _ := json.Marshal(err)
 			return lib.Render(c, login.LoginPage(form, string(formErrors)))
 		}
 

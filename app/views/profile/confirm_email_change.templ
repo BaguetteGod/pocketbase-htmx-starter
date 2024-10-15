@@ -1,0 +1,58 @@
+package profile
+
+import (
+	"pb-starter/app/components/inputs"
+	"pb-starter/app/components/layouts"
+	"pb-starter/app/forms"
+)
+
+templ ConfirmEmailChangePage(form forms.ConfirmEmailChangeForm, err string) {
+	@layouts.Auth() {
+		<div class="flex flex-col gap-8 w-full max-w-xs">
+			<div class="flex flex-col gap-2">
+				<div class="font-semibold text-3xl flex">Confirm email change</div>
+			</div>
+			<form
+				method="post"
+				action={ templ.SafeURL("/confirm-email-change/" + form.Token) }
+				hx-boost="true"
+				class="flex flex-col gap-4 text-gray-700"
+			>
+				@inputs.FormInputWrapper("password", err) {
+					Password
+					@inputs.Password{Name: "password"}.Comp()
+				}
+				<div class="flex gap-1">
+					<span class="text-gray-500">Wanna keep your email?</span>
+					@inputs.Url{Route: "/dashboard"}.Comp() {
+						Go to dashboard
+					}
+				</div>
+				@inputs.FormInputWrapper("token", err) {
+					<input class="hidden" readonly name="token" value={ form.Token }/>
+				}
+				@inputs.Button{Type: "submit"}.Comp() {
+					Confirm
+				}
+			</form>
+		</div>
+	}
+}
+
+templ EmailChangedSuccessPage() {
+	@layouts.Auth() {
+		<div class="flex flex-col gap-8 w-full max-w-xs">
+			<div class="flex flex-col gap-2">
+				<div class="font-semibold text-3xl flex">Email changed succesfully</div>
+			</div>
+			<div class="flex flex-col gap-4 text-gray-700">
+				<p class="text-gray-700 mt-2">
+					Your email has been changed succesfully.
+				</p>
+				@inputs.Url{Route: "/login"}.Comp() {
+					<span aria-hidden="true">←&nbsp;</span>Sign in
+				}
+			</div>
+		</div>
+	}
+}
