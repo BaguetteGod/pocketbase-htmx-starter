@@ -1,30 +1,50 @@
 package inputs
 
 import "cmp"
+import "github.com/tidwall/gjson"
+import "pb-starter/app/lib"
 
 type Text struct {
 	Name     string
 	Value    string
 	Classes  string
 	Hint     string
+	Error    string
+    HxPost   string
 	Disabled bool
 	Readonly bool
 }
 
 templ (ti Text) Comp() {
-	<input
-		type="text"
-		name={ ti.Name }
-		value={ ti.Value }
-		class={ cmp.Or(ti.Classes, TextInputClasses) }
-		if ti.Disabled {
-			disabled
+    <label
+        if ti.HxPost != "" {
+            hx-target="this"
+            hx-swap="outerHTML"
+        }
+        for={ ti.Name }
+        class="flex flex-col gap-1 font-medium"
+    >
+        { children... }
+        <input
+            type="text"
+            name={ ti.Name }
+            value={ ti.Value }
+            class={ cmp.Or(ti.Classes, TextInputClasses) }
+            if ti.HxPost != "" {
+                hx-post={ ti.HxPost }
+            }
+            if ti.Disabled {
+                disabled
+            }
+            if ti.Readonly {
+                readonly
+            }
+        />
+        if ti.Hint != "" && ti.Error == "" {
+            <div class="text-xs font-normal text-gray-500">{ ti.Hint }</div>
+        }
+		if gjson.Get(ti.Error, ti.Name).String() != "" {
+			<div class="text-red-600 text-sm font-normal -mt-1">{ lib.TitleCase(gjson.Get(ti.Error, ti.Name).String()) }.</div>
 		}
-		if ti.Readonly {
-			readonly
-		}
-	/>
-	if ti.Hint != "" {
-		<div class="text-xs font-normal text-gray-500">{ ti.Hint }</div>
-	}
+    </label>
 }
