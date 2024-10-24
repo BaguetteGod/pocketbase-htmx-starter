@@ -19,7 +19,7 @@ import (
 	"pb-starter/app/lib"
 )
 
-func Profile(c echo.Context, form forms.ProfileFormValue, err string, isOauth2User bool) templ.Component {
+func ProfilePage(c echo.Context, form forms.ProfileFormValue, err string, isOauth2User bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -49,7 +49,7 @@ func Profile(c echo.Context, form forms.ProfileFormValue, err string, isOauth2Us
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = ProfilePageAndLayout(c, form, err, isOauth2User).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = ProfilePageContent(c, form, err, isOauth2User).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -63,7 +63,7 @@ func Profile(c echo.Context, form forms.ProfileFormValue, err string, isOauth2Us
 	})
 }
 
-func ProfilePageAndLayout(c echo.Context, form forms.ProfileFormValue, err string, isOauth2User bool) templ.Component {
+func ProfilePageContent(c echo.Context, form forms.ProfileFormValue, err string, isOauth2User bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -158,7 +158,7 @@ func ProfilePageAndLayout(c echo.Context, form forms.ProfileFormValue, err strin
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form hx-post=\"/avatar\" hx-boost=\"true\" hx-encoding=\"multipart/form-data\" class=\"m-0\" x-on:htmx:after-swap.window=\"closeModal()\">")
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form hx-post=\"/avatar\" hx-boost=\"true\" hx-encoding=\"multipart/form-data\" x-on:htmx:after-swap.window=\"closeModal()\" class=\"m-0\">")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -272,35 +272,37 @@ func ProfilePageAndLayout(c echo.Context, form forms.ProfileFormValue, err strin
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Var13 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-						templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-						templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-						if !templ_7745c5c3_IsBuffer {
-							defer func() {
-								templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-								if templ_7745c5c3_Err == nil {
-									templ_7745c5c3_Err = templ_7745c5c3_BufErr
-								}
-							}()
-						}
-						ctx = templ.InitializeContext(ctx)
-						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("Email")
+					if !isOauth2User {
+						templ_7745c5c3_Var13 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+							templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+							templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+							if !templ_7745c5c3_IsBuffer {
+								defer func() {
+									templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+									if templ_7745c5c3_Err == nil {
+										templ_7745c5c3_Err = templ_7745c5c3_BufErr
+									}
+								}()
+							}
+							ctx = templ.InitializeContext(ctx)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("Email")
+							if templ_7745c5c3_Err != nil {
+								return templ_7745c5c3_Err
+							}
+							templ_7745c5c3_Err = inputs.Text{
+								Name:     "email",
+								Value:    form.Email,
+								Readonly: isOauth2User,
+							}.Comp().Render(ctx, templ_7745c5c3_Buffer)
+							if templ_7745c5c3_Err != nil {
+								return templ_7745c5c3_Err
+							}
+							return templ_7745c5c3_Err
+						})
+						templ_7745c5c3_Err = inputs.FormInputWrapper("email", err).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = inputs.Text{
-							Name:     "email",
-							Value:    form.Email,
-							Readonly: isOauth2User,
-							Hint:     "You can only change your email if you didn't use Google to sign up"}.Comp().Render(ctx, templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						return templ_7745c5c3_Err
-					})
-					templ_7745c5c3_Err = inputs.FormInputWrapper("email", err).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div>")
 					if templ_7745c5c3_Err != nil {

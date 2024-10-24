@@ -53,6 +53,6 @@ func RegisterLoginRoutes(e *core.ServeEvent, group echo.Group) {
 
 		lib.SetCookie(c, json_map["token"].(string))
 
-		return c.Redirect(302, "/login")
+		return c.Redirect(302, "/dashboard")
 	})
 }

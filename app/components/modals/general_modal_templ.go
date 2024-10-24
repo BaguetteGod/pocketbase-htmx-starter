@@ -28,20 +28,20 @@ func GeneralModal(buttonText string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div x-data=\"{\n            modalOpen: false,\n            openModal() {\n                this.modalOpen = true\n            },\n            closeModal() {\n                this.modalOpen = false\n            }\n        }\" x-init=\"$nextTick(() =&gt; {\n            $refs.modalBackdrop.classList.remove(&#39;hidden&#39;)\n            $refs.modalContainer.classList.remove(&#39;hidden&#39;)\n            $refs.modalContent.classList.remove(&#39;hidden&#39;)\n        })\" class=\"relative z-50\" aria-labelledby=\"modal-title\" role=\"dialog\" aria-modal=\"true\"><button x-on:click=\"openModal()\" type=\"button\" class=\"px-3 py-2 rounded font-medium border border-gray-600 flex items-center justify-center hover:bg-gray-50 w-full\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div x-data=\"{\n            modalOpen: false,\n            openModal() {\n                this.modalOpen = true\n            },\n            closeModal() {\n                this.modalOpen = false\n            }\n        }\" class=\"relative z-50\" aria-labelledby=\"modal-title\" role=\"dialog\" aria-modal=\"true\"><button x-on:click=\"openModal()\" type=\"button\" class=\"px-3 py-2 rounded font-medium border border-gray-600 flex items-center justify-center hover:bg-gray-50 w-full\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(buttonText)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/modals/general_modal.templ`, Line: 31, Col: 15}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/modals/general_modal.templ`, Line: 26, Col: 15}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button><div x-ref=\"modalBackdrop\" x-show=\"modalOpen\" x-transition:enter=\"ease-out duration-300\" x-transition:enter-start=\"opacity-0\" x-transition:enter-end=\"opacity-100\" x-transition:leave=\"ease-in duration-200\" x-transition:leave-start=\"opacity-100\" x-transition:leave-end=\"opacity-0\" class=\"fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity hidden\" aria-hidden=\"true\"></div><div x-ref=\"modalContainer\" x-show=\"modalOpen\" class=\"fixed inset-0 z-50 w-screen overflow-y-auto hidden\"><div class=\"flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0\"><div x-ref=\"modalContent\" x-show=\"modalOpen\" x-on:click.outside=\"closeModal()\" x-transition:enter=\"ease-out duration-300\" x-transition:enter-start=\"opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95\" x-transition:enter-end=\"opacity-100 translate-y-0 sm:scale-100\" x-transition:leave=\"ease-in duration-200\" x-transition:leave-start=\"opacity-100 translate-y-0 sm:scale-100\" x-transition:leave-end=\"opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95\" class=\"relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg hidden\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button><template x-if=\"true\"><div x-ref=\"modalBackdrop\" x-show=\"modalOpen\" x-transition:enter=\"ease-out duration-300\" x-transition:enter-start=\"opacity-0\" x-transition:enter-end=\"opacity-100\" x-transition:leave=\"ease-in duration-200\" x-transition:leave-start=\"opacity-100\" x-transition:leave-end=\"opacity-0\" class=\"fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity\" aria-hidden=\"true\"></div></template><template x-if=\"true\"><div x-ref=\"modalContainer\" x-show=\"modalOpen\" class=\"fixed inset-0 z-50 w-screen overflow-y-auto\"><div class=\"flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0\"><div x-ref=\"modalContent\" x-show=\"modalOpen\" x-on:click.outside=\"closeModal()\" x-transition:enter=\"ease-out duration-300\" x-transition:enter-start=\"opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95\" x-transition:enter-end=\"opacity-100 translate-y-0 sm:scale-100\" x-transition:leave=\"ease-in duration-200\" x-transition:leave-start=\"opacity-100 translate-y-0 sm:scale-100\" x-transition:leave-end=\"opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95\" class=\"relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -49,7 +49,7 @@ func GeneralModal(buttonText string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div></template></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

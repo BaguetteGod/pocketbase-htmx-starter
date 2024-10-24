@@ -11,13 +11,13 @@ import (
 	"pb-starter/app/lib"
 )
 
-templ Profile(c echo.Context, form forms.ProfileFormValue, err string, isOauth2User bool) {
+templ ProfilePage(c echo.Context, form forms.ProfileFormValue, err string, isOauth2User bool) {
 	@layouts.AppAuthenticatedBase() {
-		@ProfilePageAndLayout(c, form, err, isOauth2User)
+		@ProfilePageContent(c, form, err, isOauth2User)
 	}
 }
 
-templ ProfilePageAndLayout(c echo.Context, form forms.ProfileFormValue, err string, isOauth2User bool) {
+templ ProfilePageContent(c echo.Context, form forms.ProfileFormValue, err string, isOauth2User bool) {
 	<div hx-target="this" hx-ext="alpine-morph" hx-swap="morph">
 		@sidebar.SidebarLayout(c) {
 			@form_components.FormSection() {
@@ -32,8 +32,8 @@ templ ProfilePageAndLayout(c echo.Context, form forms.ProfileFormValue, err stri
 										hx-post="/avatar"
 										hx-boost="true"
 										hx-encoding="multipart/form-data"
-										class="m-0"
 										x-on:htmx:after-swap.window="closeModal()"
+										class="m-0"
 									>
 										@modals.ModalContentWrapper() {
 											@inputs.Avatar{Name: "avatar", Value: lib.GetAvatar(c)}.Comp()
@@ -55,13 +55,15 @@ templ ProfilePageAndLayout(c echo.Context, form forms.ProfileFormValue, err stri
 							Username
 							@inputs.Text{Name: "username", Value: form.Username}.Comp()
 						}
-						@inputs.FormInputWrapper("email", err) {
-							Email
-							@inputs.Text{
-								Name:     "email",
-								Value:    form.Email,
-								Readonly: isOauth2User,
-								Hint:     "You can only change your email if you didn't use Google to sign up"}.Comp()
+						if !isOauth2User {
+							@inputs.FormInputWrapper("email", err) {
+								Email
+								@inputs.Text{
+									Name:     "email",
+									Value:    form.Email,
+									Readonly: isOauth2User,
+								}.Comp()
+							}
 						}
 						<div>
 							@inputs.Button{Type: "submit"}.Comp() {

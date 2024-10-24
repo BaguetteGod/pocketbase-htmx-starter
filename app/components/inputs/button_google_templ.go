@@ -9,23 +9,11 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"github.com/joho/godotenv"
-	"log"
-	"os"
 	"pb-starter/app/components/svgs"
+	"pb-starter/app/lib"
 )
 
 func ButtonGoogleSignIn() templ.Component {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
-	appUrl := os.Getenv("APP_URL")
-	return buttonGoogleSignIn(appUrl)
-}
-
-func buttonGoogleSignIn(appUrl string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -43,11 +31,20 @@ func buttonGoogleSignIn(appUrl string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templ.JSONScript("appUrl", appUrl).Render(ctx, templ_7745c5c3_Buffer)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script src=\"/dist/pocketbase/dist/pocketbase.umd.js\"></script><button data-appurl=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script src=\"/dist/pocketbase/dist/pocketbase.umd.js\"></script><script type=\"text/javascript\">\n    const signInWithGoogle = async () => {\n        const appUrl = JSON.parse(document.getElementById('appUrl').textContent);\n        const pb = new PocketBase(appUrl);\n        const authData = await pb.collection('users').authWithOAuth2({provider: 'google'});\n        const response = await fetch(`${appUrl}/login/oauth2`, {\n            method: 'POST',\n            headers: {\n                'Content-Type': 'application/json',\n            },\n            body: JSON.stringify(authData),\n        })\n        location.reload();\n    }\n    </script><button type=\"button\" onclick=\"signInWithGoogle()\" class=\"border border-gray-400 rounded flex gap-2 py-2 px-3 items-center justify-center font-medium focus:outline-0 focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 text-gray-700\">")
+		var templ_7745c5c3_Var2 string
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(lib.GetAppUrl())
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/button_google.templ`, Line: 11, Col: 31}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" x-data=\"{\n            appUrl: $el.dataset.appurl,\n            async signInWithGoogle() {\n                const pb = new PocketBase(this.appUrl);\n                const authData = await pb.collection(&#39;users&#39;).authWithOAuth2({provider: &#39;google&#39;});\n                const response = await fetch(`${this.appUrl}/login/oauth2`, {\n                    method: &#39;POST&#39;,\n                    headers: {\n                        &#39;Content-Type&#39;: &#39;application/json&#39;,\n                    },\n                    body: JSON.stringify(authData),\n                })\n                location.reload()\n            },\n        }\" type=\"button\" x-on:click=\"signInWithGoogle()\" class=\"border border-gray-400 rounded flex gap-2 py-2 px-3 items-center justify-center font-medium focus:outline-0 focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 text-gray-700\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

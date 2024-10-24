@@ -4,6 +4,7 @@ import (
 	"github.com/labstack/echo/v5"
 	"pb-starter/app/components/layouts/sidebar"
 	"pb-starter/app/components/shared"
+	"pb-starter/app/components/toast"
 )
 
 templ App() {
@@ -50,15 +51,10 @@ templ LayoutBackgroundImage() {
 
 templ AppAuthenticatedBase() {
 	<html>
-		@shared.Head() {
-			<script src="https://unpkg.com/htmx.org@latest/dist/ext/alpine-morph.js"></script>
-			<!-- Alpine Plugins -->
-			<script defer src="https://unpkg.com/@alpinejs/morph@3.x.x/dist/cdn.min.js"></script>
-			<!-- Alpine Core -->
-			<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-		}
+		@shared.Head()
 		<body class="h-full text-sm">
 			{ children... }
+			@toast.ToastComponent()
 		</body>
 	</html>
 }

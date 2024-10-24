@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"pb-starter/app/components/toast"
 	"pb-starter/app/forms"
 	"pb-starter/app/lib"
 	middleware "pb-starter/app/middelware"
@@ -107,7 +108,7 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 			Username: user.Username(),
 			Email:    user.Email(),
 		}
-		return lib.Render(c, profile.Profile(c, form, "", user.Get("oauth") == true))
+		return lib.Render(c, profile.ProfilePage(c, form, "", user.Get("oauth") == true))
 	})
 
 	group.POST("/profile", func(c echo.Context) error {
@@ -116,11 +117,13 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 		err := form.Validate(e, c)
 		if err != nil {
 			formErrors, _ := json.Marshal(err)
-			return lib.Render(c, profile.Profile(c, form, string(formErrors), user.Get("oauth") == true))
+			return lib.Render(c, profile.ProfilePage(c, form, string(formErrors), user.Get("oauth") == true))
 		}
 
+		message := ""
 		if user.Get("oauth") != true && form.Email != user.Email() {
 			handleRequestEmailChange(c, form.Email)
+			message = fmt.Sprintf("An email has been sent to %s. Please follow the instructions to confirm your new email.", form.Email)
 		}
 
 		if err := user.SetUsername(form.Username); err != nil {
@@ -131,7 +134,8 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 			return err
 		}
 
-		return lib.Render(c, profile.Profile(c, form, "", user.Get("oauth") == true))
+		toast.New(c, toast.Toast{Message: message})
+		return lib.Render(c, profile.ProfilePage(c, form, "", user.Get("oauth") == true))
 	})
 
 	group.GET("/confirm-email-change/:token", func(c echo.Context) error {
@@ -177,12 +181,6 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 		}
 
 		form := pbforms.NewRecordUpsert(app, user)
-		if err := form.LoadData(map[string]any{
-			"username": user.Username(),
-			"email":    user.Email(),
-		}); err != nil {
-			return err
-		}
 
 		src, err := filesystem.NewFileFromMultipart(file)
 		if err != nil {
@@ -199,6 +197,8 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 			app.Logger().Error(err.Error())
 			return err
 		}
-		return lib.Render(c, profile.Profile(c, pfForm, "", user.Get("oauth") == true))
+
+		toast.New(c, toast.Toast{})
+		return lib.Render(c, profile.ProfilePageContent(c, pfForm, "", user.Get("oauth") == true))
 	})
 }
