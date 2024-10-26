@@ -18,29 +18,30 @@ templ LoginPage(form forms.LoginFormValue, err string) {
 					}
 				</div>
 			</div>
-			<form method="POST" action="/login" hx-boost="true" class="flex flex-col gap-4 text-gray-700">
-				@inputs.FormInputWrapper("email", err) {
-					Email address
-					@inputs.Text{
-						Name:  "email",
-						Value: form.Email,
-					}.Comp()
-				}
-				@inputs.FormInputWrapper("password", err) {
-					Password
-					@inputs.Password{Name: "password"}.Comp()
-				}
-				<div class="flex justify-between items-center">
-					@inputs.Url{Route: "/forgot-password"}.Comp() {
-						Forgot password?
-					}
-				</div>
-				@inputs.FormInputWrapper("verified", err)
-				@inputs.Button{Type: "submit"}.Comp() {
-					Sign in
-				}
-				@inputs.ButtonGoogleSignIn()
-			</form>
+			@LoginPageForm(form, err)
 		</div>
 	}
+}
+
+templ LoginPageForm(form forms.LoginFormValue, err string) {
+	<form hx-post="/login" hx-target="this" hx-swap="outerHTML" class="flex flex-col text-gray-700">
+		@inputs.Text{
+			Name:  "email",
+			Value: form.Email,
+			Label: "Email address",
+			Error: err,
+		}.Comp()
+		@inputs.Password{Name: "password", Error: err}.Comp()
+		<div class="flex flex-col gap-4">
+			<div class="flex justify-between items-center">
+				@inputs.Url{Route: "/forgot-password"}.Comp() {
+					Forgot password?
+				}
+			</div>
+			@inputs.Button{Type: "submit"}.Comp() {
+				Sign in
+			}
+			@inputs.ButtonGoogleSignIn()
+		</div>
+	</form>
 }

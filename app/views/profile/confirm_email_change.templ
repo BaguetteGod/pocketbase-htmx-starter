@@ -16,24 +16,21 @@ templ ConfirmEmailChangePage(form forms.ConfirmEmailChangeForm, err string) {
 				method="post"
 				action={ templ.SafeURL("/confirm-email-change/" + form.Token) }
 				hx-boost="true"
-				class="flex flex-col gap-4 text-gray-700"
+				class="flex flex-col text-gray-700"
 			>
-				@inputs.FormInputWrapper("password", err) {
-					Password
-					@inputs.Password{Name: "password"}.Comp()
-				}
-				<div class="flex gap-1">
-					<span class="text-gray-500">Wanna keep your email?</span>
-					@inputs.Url{Route: "/dashboard"}.Comp() {
-						Go to dashboard
+				@inputs.Password{Name: "password", Error: err}.Comp()
+				<div class="flex flex-col gap-4">
+					<div class="flex gap-1">
+						<span class="text-gray-500">Want to keep your email?</span>
+						@inputs.Url{Route: "/dashboard"}.Comp() {
+							Go to dashboard
+						}
+					</div>
+					<input class="hidden" readonly name="token" value={ form.Token }/>
+					@inputs.Button{Type: "submit"}.Comp() {
+						Confirm
 					}
 				</div>
-				@inputs.FormInputWrapper("token", err) {
-					<input class="hidden" readonly name="token" value={ form.Token }/>
-				}
-				@inputs.Button{Type: "submit"}.Comp() {
-					Confirm
-				}
 			</form>
 		</div>
 	}

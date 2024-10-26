@@ -5,13 +5,21 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"slices"
 	"strconv"
+	"strings"
 	"unicode"
 
 	"github.com/a-h/templ"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase/apis"
+	"github.com/pocketbase/pocketbase/tools/filesystem"
+)
+
+var (
+	MAX_FILE_SIZE    = 5000000
+	VALID_FILE_TYPES = []string{"jpg", "png", "webp", "gif"}
 )
 
 func Render(c echo.Context, component templ.Component) error {
@@ -64,4 +72,10 @@ func GetAppUrl() string {
 	}
 
 	return os.Getenv("APP_URL")
+}
+
+func ValidateImage(file *filesystem.File) bool {
+	stringSlice := strings.Split(file.Name, ".")
+	fileType := stringSlice[len(stringSlice)-1]
+	return file.Size <= int64(MAX_FILE_SIZE) && slices.Contains(VALID_FILE_TYPES, fileType)
 }

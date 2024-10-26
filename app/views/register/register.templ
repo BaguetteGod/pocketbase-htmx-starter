@@ -8,7 +8,7 @@ import (
 
 templ RegisterPage(form forms.RegisterFormValue, err string) {
 	@layouts.Auth() {
-		<div id="login-section-div" class="flex flex-col gap-8 w-full max-w-xs">
+		<div id="register-section-content" class="flex flex-col gap-8 w-full max-w-xs">
 			<div class="flex flex-col gap-2">
 				<div class="font-semibold text-3xl flex">Sign up for an account</div>
 				<div class="flex gap-1">
@@ -17,45 +17,43 @@ templ RegisterPage(form forms.RegisterFormValue, err string) {
 						Sign in
 					}
 				</div>
+				<form method="POST" action="/register" hx-boost="true" class="flex flex-col text-gray-700">
+					@inputs.Text{Name: "email", Label: "Email address", Value: form.Email, HxPost: "/register/email", Error: err}.Comp()
+					@inputs.Password{Name: "password", HxPost: "/register/password", Error: err}.Comp()
+					@inputs.Password{
+						Name:   "passwordConfirm",
+						Label:  "Confirm password",
+						HxPost: "/register/password-confirm",
+						Error:  err,
+					}.Comp()
+					@inputs.Text{Name: "username", Value: form.Username, HxPost: "/register/username", Error: err}.Comp()
+					<div class="flex flex-col gap-4">
+						@inputs.Button{Type: "submit"}.Comp() {
+							Sign up
+						}
+						@inputs.ButtonGoogleSignIn()
+					</div>
+				</form>
 			</div>
-			<form method="post" action="/register" hx-boost="true" class="flex flex-col gap-4 text-gray-700">
-				@inputs.FormInputWrapper("email", err) {
-					Email address
-					@inputs.Text{Name: "email", Value: form.Email}.Comp()
-				}
-				@inputs.FormInputWrapper("password", err) {
-					Password
-					@inputs.Password{Name: "password"}.Comp()
-				}
-				@inputs.FormInputWrapper("passwordConfirm", err) {
-					Confirm password
-					@inputs.Password{Name: "passwordConfirm"}.Comp()
-				}
-				@inputs.FormInputWrapper("username", err) {
-					Username
-					@inputs.Text{Name: "username", Value: form.Username}.Comp()
-				}
-				@inputs.Button{Type: "submit"}.Comp() {
-					Sign up
-				}
-				@inputs.ButtonGoogleSignIn()
-			</form>
 		</div>
 	}
 }
 
-css registerSuccessBackgroundImage() {
-	background-image: url("https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?q=80&w=2200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
-}
-
-templ RegisterSuccessPage() {
-	@layouts.LayoutBackgroundImage() {
-		<div class="flex flex-col p-4 text-white gap-4 items-center z-10 pb-40">
-			<h1 class="text-5xl font-bold">
-				Thanks for registering
-			</h1>
-			<p class="text-slate-200 mt-2">To start using DateRate, please confirm your email.</p>
-			<a href="/login" class="font-bold mt-3"><span aria-hidden="true">←&nbsp;</span>Sign in</a>
+templ RegisterSuccessPage(form forms.RegisterFormValue) {
+	@layouts.Auth() {
+		<div class="flex flex-col gap-8 w-full max-w-xs">
+			<div class="flex flex-col gap-2">
+				<div class="font-semibold text-3xl flex">Thanks for registering</div>
+			</div>
+			<div class="flex flex-col gap-4 text-gray-700">
+				<p class="text-gray-700 mt-2">
+					You have successfully registered an account. An email has been sent to { form.Email }. Please follow the
+					instructions to activate your account.
+				</p>
+				@inputs.Url{Route: "/login"}.Comp() {
+					<span aria-hidden="true">←&nbsp;</span>Sign in
+				}
+			</div>
 		</div>
 	}
 }

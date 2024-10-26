@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"pb-starter/app/components/inputs"
 	"pb-starter/app/components/toast"
 	"pb-starter/app/forms"
 	"pb-starter/app/lib"
@@ -138,9 +139,31 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 		return lib.Render(c, profile.ProfilePage(c, form, "", user.Get("oauth") == true))
 	})
 
+	group.POST("/profile/username", func(c echo.Context) error {
+		form := forms.GetProfileFormValue(c)
+		err := form.Validate(e, c)
+		if err != nil {
+			formErrors, _ := json.Marshal(err)
+			return lib.Render(c, inputs.Text{Name: "username", Value: form.Username, HxPost: "/profile/username", Error: string(formErrors)}.Comp())
+		}
+
+		return lib.Render(c, inputs.Text{Name: "username", Value: form.Username, HxPost: "/profile/username"}.Comp())
+	})
+
+	group.POST("/profile/email", func(c echo.Context) error {
+		form := forms.GetProfileFormValue(c)
+		err := form.Validate(e, c)
+		if err != nil {
+			formErrors, _ := json.Marshal(err)
+			return lib.Render(c, inputs.Text{Name: "email", Label: "Email address", Value: form.Email, HxPost: "/profile/email", Error: string(formErrors)}.Comp())
+		}
+
+		return lib.Render(c, inputs.Text{Name: "email", Label: "Email address", Value: form.Email, HxPost: "/profile/email"}.Comp())
+	})
+
 	group.GET("/confirm-email-change/:token", func(c echo.Context) error {
 		token := c.PathParam("token")
-		if len(token) != 288 {
+		if len(token) < 200 {
 			return c.Redirect(302, "/dashboard")
 		}
 		form := forms.ConfirmEmailChangeForm{Token: token}
@@ -158,11 +181,8 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 
 		resp := handleConfirmEmailChangeRequest(form)
 		if resp != nil {
-			errorMap := map[string]interface{}{
-				"token": "Link is invalid or has expired",
-			}
-			formErrors, _ := json.Marshal(errorMap)
-			return lib.Render(c, profile.ConfirmEmailChangePage(form, string(formErrors)))
+			toast.New(c, toast.Toast{Level: toast.DANGER, Title: "Link is invalid or has expired"})
+			return lib.Render(c, profile.ConfirmEmailChangePage(form, ""))
 		}
 
 		return lib.Render(c, profile.EmailChangedSuccessPage())
@@ -183,6 +203,11 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 		form := pbforms.NewRecordUpsert(app, user)
 
 		src, err := filesystem.NewFileFromMultipart(file)
+		if !lib.ValidateImage(src) {
+			toast.New(c, toast.Toast{Level: toast.DANGER, Title: "Invalid image format or size", Message: "Accepted image formats are JPG, WEBP, GIF or PNG, 5MB max."})
+			return c.JSON(400, http.StatusBadRequest)
+		}
+
 		if err != nil {
 			app.Logger().Error("failed to create file", "error", err)
 			return err

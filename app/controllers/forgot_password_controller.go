@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"pb-starter/app/components/inputs"
+	"pb-starter/app/components/toast"
 	"pb-starter/app/forms"
 	"pb-starter/app/lib"
 	"pb-starter/app/views/forgot_password"
@@ -104,7 +106,7 @@ func RegisterForgotPasswordRoutes(e *core.ServeEvent, group echo.Group) {
 
 	group.GET("/confirm-password-reset/:token", func(c echo.Context) error {
 		token := c.PathParam("token")
-		if len(token) != 288 {
+		if len(token) < 200 {
 			return c.Redirect(302, "/login")
 		}
 		form := forms.ConfirmPasswordResetFormValue{Token: token}
@@ -122,13 +124,32 @@ func RegisterForgotPasswordRoutes(e *core.ServeEvent, group echo.Group) {
 
 		resp := handleConfirmPasswordResetRequest(form)
 		if resp != nil {
-			errorMap := map[string]interface{}{
-				"token": "Link is invalid or has expired",
-			}
-			formErrors, _ := json.Marshal(errorMap)
-			return lib.Render(c, forgot_password.ConfirmPasswordResetPage(form, string(formErrors)))
+			toast.New(c, toast.Toast{Level: toast.DANGER, Title: "Link is invalid or has expired"})
+			return lib.Render(c, forgot_password.ConfirmPasswordResetPage(form, ""))
 		}
 
 		return lib.Render(c, forgot_password.ConfirmPasswordSuccessPage())
+	})
+
+	group.POST("/confirm-password-reset/password", func(c echo.Context) error {
+		form := forms.GetRegisterFormValue(c)
+		err := form.Validate(e)
+		if err != nil {
+			formErrors, _ := json.Marshal(err)
+			return lib.Render(c, inputs.Password{Name: "password", Value: form.Password, HxPost: "/confirm-password-reset/password", Error: string(formErrors)}.Comp())
+		}
+
+		return lib.Render(c, inputs.Password{Name: "password", Value: form.Password, HxPost: "/confirm-password-reset/password"}.Comp())
+	})
+
+	group.POST("/confirm-password-reset/password-confirm", func(c echo.Context) error {
+		form := forms.GetRegisterFormValue(c)
+		err := form.Validate(e)
+		if err != nil {
+			formErrors, _ := json.Marshal(err)
+			return lib.Render(c, inputs.Password{Name: "passwordConfirm", Label: "Confirm password", Value: form.PasswordConfirm, HxPost: "/confirm-password-reset/password-confirm", Error: string(formErrors)}.Comp())
+		}
+
+		return lib.Render(c, inputs.Password{Name: "passwordConfirm", Label: "Confirm password", Value: form.PasswordConfirm, HxPost: "/confirm-password-reset/password-confirm"}.Comp())
 	})
 }

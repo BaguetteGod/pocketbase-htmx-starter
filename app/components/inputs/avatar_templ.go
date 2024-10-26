@@ -35,24 +35,24 @@ func (ai Avatar) Comp() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div x-data=\"{\n            file: null,\n            imageUrl: null,\n\n            setFile(event) {\n                this.file = event.target.files[0]\n                this.fileToDataUrl()\n            },\n\n            fileToDataUrl() {\n                if (!this.file) return\n\n                const reader = new FileReader()\n\n                reader.readAsDataURL(this.file)\n                reader.onload = (e) =&gt; {\n                    this.imageUrl = e.target.result\n                }\n            },\n\n            drop(event) {\n                if (!event.dataTransfer.items) return\n\n                const droppedItem = event.dataTransfer.items[0]\n                if (droppedItem.kind !== &#39;file&#39;) return\n\n                const uploadedFile = droppedItem.getAsFile()\n                if (!uploadedFile.type.match(&#39;image/jpeg|image/png|image/gif|image/webp&#39;)) return\n\n                this.file = uploadedFile\n                this.fileToDataUrl()\n                this.setFileOnInput(this.file)\n            },\n\n            setFileOnInput(file) {\n                const dataTransfer = new DataTransfer()\n                dataTransfer.items.add(file)\n                this.$refs.avatarFileInput.files = dataTransfer.files\n            },\n        }\" class=\"flex flex-col gap-6 items-center justify-center\"><div x-on:drop.prevent=\"drop; $el.classList.remove(&#39;!border-blue-600&#39;)\" x-on:dragover.prevent=\"$el.classList.add(&#39;!border-blue-600&#39;)\" x-on:dragleave.prevent=\"$el.classList.remove(&#39;!border-blue-600&#39;)\" class=\"border-2 border-gray-200 border-dashed rounded p-16\"><template x-if=\"!file\"><img class=\"object-cover rounded-full flex-none w-24 h-24\" src=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div x-data=\"{\n            file: null,\n            imageUrl: null,\n            fileTypes: &#39;image/jpeg|image/png|image/gif|image/webp&#39;,\n            sizeLimit: 5000000,\n            error: false,\n\n            setFile(event) {\n                this.file = event.target.files[0]\n                this.fileToDataUrl()\n            },\n\n            fileToDataUrl() {\n                if (!this.file) return\n                this.error = false\n\n                const reader = new FileReader()\n\n                reader.readAsDataURL(this.file)\n                reader.onload = (e) =&gt; {\n                    this.imageUrl = e.target.result\n                }\n            },\n\n            drop(event) {\n                if (!event.dataTransfer.items) return\n\n                const droppedItem = event.dataTransfer.items[0]\n                if (droppedItem.kind !== &#39;file&#39;) return\n\n                const uploadedFile = droppedItem.getAsFile()\n                if (!uploadedFile.type.match(this.fileTypes) || uploadedFile.size &gt;= this.sizeLimit) {\n                    this.error = true\n                    return\n                }\n\n                this.file = uploadedFile\n                this.fileToDataUrl()\n                this.setFileOnInput(this.file)\n            },\n\n            setFileOnInput(file) {\n                const dataTransfer = new DataTransfer()\n                dataTransfer.items.add(file)\n                this.$refs.avatarFileInput.files = dataTransfer.files\n            },\n        }\" class=\"flex flex-col items-center justify-center\"><div x-on:drop.prevent=\"drop; $el.classList.remove(&#39;!border-blue-600&#39;)\" x-on:dragover.prevent=\"$el.classList.add(&#39;!border-blue-600&#39;)\" x-on:dragleave.prevent=\"$el.classList.remove(&#39;!border-blue-600&#39;)\" class=\"border-2 border-gray-200 border-dashed rounded p-16\"><template x-if=\"!file\"><img class=\"object-cover rounded-full flex-none w-24 h-24\" src=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(ai.Value)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/avatar.templ`, Line: 64, Col: 89}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/avatar.templ`, Line: 70, Col: 77}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></template><template x-if=\"file\"><img class=\"object-cover rounded-full flex-none w-24 h-24\" :src=\"imageUrl\"></template></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></template><template x-if=\"file\"><img class=\"object-cover rounded-full flex-none w-24 h-24\" :src=\"imageUrl\"></template></div><div class=\"min-h-5\"><template x-if=\"error\"><div class=\"text-red-600 text-xs font-normal text-wrap mt-1\">Accepted image formats are JPG, WEBP, GIF or PNG, 5MB max.</div></template></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var3 = []any{fmt.Sprintf("%s w-fit cursor-pointer", ButtonOutlineGrayClasses)}
+		var templ_7745c5c3_Var3 = []any{fmt.Sprintf("%s w-fit cursor-pointer mt-4", ButtonOutlineGrayClasses)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var3...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -64,7 +64,7 @@ func (ai Avatar) Comp() templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(ai.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/avatar.templ`, Line: 73, Col: 22}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/avatar.templ`, Line: 84, Col: 22}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -90,7 +90,7 @@ func (ai Avatar) Comp() templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(ai.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/avatar.templ`, Line: 79, Col: 18}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/avatar.templ`, Line: 90, Col: 18}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -103,7 +103,7 @@ func (ai Avatar) Comp() templ.Component {
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(ai.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/avatar.templ`, Line: 80, Col: 28}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/avatar.templ`, Line: 91, Col: 16}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
@@ -116,7 +116,7 @@ func (ai Avatar) Comp() templ.Component {
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(ai.Value)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/avatar.templ`, Line: 81, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/components/inputs/avatar.templ`, Line: 92, Col: 20}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {

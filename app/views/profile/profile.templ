@@ -50,20 +50,19 @@ templ ProfilePageContent(c echo.Context, form forms.ProfileFormValue, err string
 							</div>
 						</div>
 					</div>
-					<form method="POST" action="/profile" hx-boost="true" class="flex flex-col gap-6">
-						@inputs.FormInputWrapper("username", err) {
-							Username
-							@inputs.Text{Name: "username", Value: form.Username}.Comp()
-						}
+					<form method="POST" action="/profile" hx-boost="true" class="flex flex-col">
+						@inputs.Text{
+							Name:   "username",
+							Value:  form.Username,
+							HxPost: "/profile/username",
+						}.Comp()
 						if !isOauth2User {
-							@inputs.FormInputWrapper("email", err) {
-								Email
-								@inputs.Text{
-									Name:     "email",
-									Value:    form.Email,
-									Readonly: isOauth2User,
-								}.Comp()
-							}
+							@inputs.Text{
+								Name:   "email",
+								Label:  "Email address",
+								Value:  form.Email,
+								HxPost: "/profile/email",
+							}.Comp()
 						}
 						<div>
 							@inputs.Button{Type: "submit"}.Comp() {

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"pb-starter/app/components/toast"
 	"pb-starter/app/forms"
 	"pb-starter/app/lib"
 	"pb-starter/app/views/login"
@@ -24,16 +25,13 @@ func RegisterLoginRoutes(e *core.ServeEvent, group echo.Group) {
 		err := form.Validate(e)
 		if err != nil {
 			formErrors, _ := json.Marshal(err)
-			return lib.Render(c, login.LoginPage(form, string(formErrors)))
+			return lib.Render(c, login.LoginPageForm(form, string(formErrors)))
 		}
 
 		user, _ := e.App.Dao().FindAuthRecordByEmail("users", form.Email)
 		if !user.Verified() {
-			errorMap := map[string]interface{}{
-				"verified": "Please verify your email",
-			}
-			formErrors, _ := json.Marshal(errorMap)
-			return lib.Render(c, login.LoginPage(form, string(formErrors)))
+			toast.New(c, toast.Toast{Level: toast.DANGER, Title: "Please verify your email address"})
+			return lib.Render(c, login.LoginPageForm(form, ""))
 		}
 
 		err = lib.Login(e, c, form.Email, form.Password)
@@ -41,7 +39,8 @@ func RegisterLoginRoutes(e *core.ServeEvent, group echo.Group) {
 			return err
 		}
 
-		return c.Redirect(302, "/dashboard")
+		c.Response().Header().Set("HX-Redirect", "/dashboard")
+		return lib.Render(c, login.LoginPageForm(form, ""))
 	})
 
 	group.POST("/login/oauth2", func(c echo.Context) error {
@@ -53,6 +52,7 @@ func RegisterLoginRoutes(e *core.ServeEvent, group echo.Group) {
 
 		lib.SetCookie(c, json_map["token"].(string))
 
+		c.Response().Header().Set("HX-Redirect", "/dashboard")
 		return c.Redirect(302, "/dashboard")
 	})
 }

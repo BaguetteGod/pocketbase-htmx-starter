@@ -6,6 +6,7 @@ import "pb-starter/app/lib"
 
 type Text struct {
 	Name     string
+    Label    string
 	Value    string
 	Classes  string
 	Hint     string
@@ -24,7 +25,11 @@ templ (ti Text) Comp() {
         for={ ti.Name }
         class="flex flex-col gap-1 font-medium"
     >
-        { children... }
+        if ti.Label == "" {
+            { lib.TitleCase(ti.Name) }
+        } else {
+            { ti.Label }
+        }
         <input
             type="text"
             name={ ti.Name }
@@ -39,12 +44,17 @@ templ (ti Text) Comp() {
             if ti.Readonly {
                 readonly
             }
+            if gjson.Get(ti.Error, ti.Name).String() != "" {
+                data-invalid="true"
+            }
         />
-        if ti.Hint != "" && ti.Error == "" {
-            <div class="text-xs font-normal text-gray-500">{ ti.Hint }</div>
-        }
-		if gjson.Get(ti.Error, ti.Name).String() != "" {
-			<div class="text-red-600 text-sm font-normal -mt-1">{ lib.TitleCase(gjson.Get(ti.Error, ti.Name).String()) }.</div>
-		}
+        <div class="min-h-6">
+            if ti.Hint != "" {
+                <div class="text-xs font-normal text-gray-500">{ ti.Hint }</div>
+            }
+            if gjson.Get(ti.Error, ti.Name).String() != "" {
+                <div class="text-red-600 text-xs font-normal">{ lib.TitleCase(gjson.Get(ti.Error, ti.Name).String()) }.</div>
+            }
+        </div>
     </label>
 }

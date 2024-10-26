@@ -1021,10 +1021,6 @@ select {
   margin-bottom: 2.5rem;
 }
 
-.-mt-1 {
-  margin-top: -0.25rem;
-}
-
 .mb-0 {
   margin-bottom: 0px;
 }
@@ -1142,6 +1138,14 @@ select {
   height: 100vh;
 }
 
+.min-h-5 {
+  min-height: 1.25rem;
+}
+
+.min-h-6 {
+  min-height: 1.5rem;
+}
+
 .min-h-full {
   min-height: 100%;
 }
@@ -1205,6 +1209,10 @@ select {
 
 .max-w-full {
   max-width: 100%;
+}
+
+.max-w-lg {
+  max-width: 32rem;
 }
 
 .max-w-md {
@@ -1394,6 +1402,10 @@ select {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.text-wrap {
+  text-wrap: wrap;
 }
 
 .rounded {
@@ -2016,6 +2028,22 @@ body {
   color: rgb(37 99 235 / var(--tw-text-opacity));
 }
 
+.data-\[invalid\=true\]\:border-red-600[data-invalid=true] {
+  --tw-border-opacity: 1;
+  border-color: rgb(220 38 38 / var(--tw-border-opacity));
+}
+
+.data-\[invalid\=true\]\:ring-1[data-invalid=true] {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+.data-\[invalid\=true\]\:ring-red-600[data-invalid=true] {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(220 38 38 / var(--tw-ring-opacity));
+}
+
 @media not all and (min-width: 640px) {
   .max-sm\:bottom-0 {
     bottom: 0px;
@@ -2055,14 +2083,6 @@ body {
 
   .sm\:w-auto {
     width: auto;
-  }
-
-  .sm\:w-full {
-    width: 100%;
-  }
-
-  .sm\:max-w-lg {
-    max-width: 32rem;
   }
 
   .sm\:translate-y-0 {
