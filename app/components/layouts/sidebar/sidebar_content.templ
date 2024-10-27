@@ -1,6 +1,7 @@
 package sidebar
 
 import (
+	"fmt"
 	"github.com/labstack/echo/v5"
 	"pb-starter/app/components/svgs"
 	"pb-starter/app/lib"
@@ -74,8 +75,13 @@ templ sidebarContent(c echo.Context) {
 						class="w-full flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50"
 					>
 						<img class="h-8 w-8 rounded-full bg-gray-50 object-cover" src={ lib.GetAvatar(c) } alt=""/>
-						<span class="sr-only">Your profile</span>
-						<span aria-hidden="true">{ lib.GetUsername(c) }</span>
+						<div class="flex flex-col">
+							<span class="sr-only">Your profile</span>
+							<span aria-hidden="true">{ lib.GetDisplayName(c) }</span>
+							<span class="text-xs text-gray-400" aria-hidden="true">
+								{ fmt.Sprintf("@%s", lib.GetUsername(c)) }
+							</span>
+						</div>
 					</a>
 				</li>
 			</ul>

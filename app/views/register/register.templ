@@ -18,15 +18,36 @@ templ RegisterPage(form forms.RegisterFormValue, err string) {
 					}
 				</div>
 				<form method="POST" action="/register" hx-boost="true" class="flex flex-col text-gray-700">
-					@inputs.Text{Name: "email", Label: "Email address", Value: form.Email, HxPost: "/register/email", Error: err}.Comp()
-					@inputs.Password{Name: "password", HxPost: "/register/password", Error: err}.Comp()
+					@inputs.Text{
+						Name:   "email",
+						Label:  "Email address",
+						Value:  form.Email,
+						HxPost: "/register/email",
+						Error:  err,
+					}.Comp()
+					@inputs.Text{
+						Name:   "username",
+						Value:  form.Username,
+						HxPost: "/register/username",
+						Error:  err,
+					}.Comp()
+					@inputs.Text{
+						Name:   "displayname",
+						Label:  "Display name",
+						Value:  form.DisplayName,
+						HxPost: "/register/display-name",
+					}.Comp()
+					@inputs.Password{
+						Name:   "password",
+						HxPost: "/register/password",
+						Error:  err,
+					}.Comp()
 					@inputs.Password{
 						Name:   "passwordConfirm",
 						Label:  "Confirm password",
 						HxPost: "/register/password-confirm",
 						Error:  err,
 					}.Comp()
-					@inputs.Text{Name: "username", Value: form.Username, HxPost: "/register/username", Error: err}.Comp()
 					<div class="flex flex-col gap-4">
 						@inputs.Button{Type: "submit"}.Comp() {
 							Sign up

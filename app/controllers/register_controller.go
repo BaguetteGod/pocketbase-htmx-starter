@@ -67,7 +67,7 @@ func RegisterRegisterRoutes(e *core.ServeEvent, group echo.Group) {
 			return lib.Render(c, register.RegisterPage(form, string(formErrors)))
 		}
 
-		err = lib.Register(e, c, form.Email, form.Username, form.Password)
+		err = lib.Register(e, c, form.Email, form.Username, form.DisplayName, form.Password)
 		handleVerificationEmailRequest(form.Email, err)
 
 		return lib.Render(c, register.RegisterSuccessPage(form))
@@ -93,6 +93,17 @@ func RegisterRegisterRoutes(e *core.ServeEvent, group echo.Group) {
 		}
 
 		return lib.Render(c, inputs.Text{Name: "username", Value: form.Username, HxPost: "/register/username"}.Comp())
+	})
+
+	group.POST("/register/display-name", func(c echo.Context) error {
+		form := forms.GetRegisterFormValue(c)
+		err := form.Validate(e)
+		if err != nil {
+			formErrors, _ := json.Marshal(err)
+			return lib.Render(c, inputs.Text{Name: "displayname", Label: "Display name", Value: form.DisplayName, HxPost: "/register/display-name", Error: string(formErrors)}.Comp())
+		}
+
+		return lib.Render(c, inputs.Text{Name: "displayname", Label: "Display name", Value: form.DisplayName, HxPost: "/register/display-name"}.Comp())
 	})
 
 	group.POST("/register/password", func(c echo.Context) error {

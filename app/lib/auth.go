@@ -1,9 +1,9 @@
 package lib
 
 import (
-	middleware "pb-starter/app/middelware"
 	"fmt"
 	"net/http"
+	middleware "pb-starter/app/middelware"
 
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase/core"
@@ -62,7 +62,7 @@ func Login(e *core.ServeEvent, c echo.Context, email string, password string) er
 	return setAuthToken(e.App, c, user)
 }
 
-func Register(e *core.ServeEvent, c echo.Context, email string, username string, password string) error {
+func Register(e *core.ServeEvent, c echo.Context, email string, username string, displayname string, password string) error {
 	collection, err := e.App.Dao().Clone().FindCollectionByNameOrId("users")
 	if err != nil {
 		return err
@@ -75,6 +75,9 @@ func Register(e *core.ServeEvent, c echo.Context, email string, username string,
 	if err := newUser.SetUsername(username); err != nil {
 		return err
 	}
+
+	newUser.Set("displayname", displayname)
+
 	if err := newUser.SetPassword(password); err != nil {
 		return err
 	}

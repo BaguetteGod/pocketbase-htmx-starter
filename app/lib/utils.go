@@ -20,6 +20,7 @@ import (
 var (
 	MAX_FILE_SIZE    = 5000000
 	VALID_FILE_TYPES = []string{"jpg", "png", "webp", "gif"}
+	REGEX_USERNAME   = "^[a-z0-9]+$"
 )
 
 func Render(c echo.Context, component templ.Component) error {
@@ -33,6 +34,10 @@ func ConvertToInt(param string, paramName string) (int, error) {
 		return 0, echo.NewHTTPError(http.StatusBadRequest, "Invalid "+paramName+" parameter")
 	}
 	return val, nil
+}
+
+func GetDisplayName(c echo.Context) string {
+	return apis.RequestInfo(c).AuthRecord.GetString("displayname")
 }
 
 func GetUsername(c echo.Context) string {

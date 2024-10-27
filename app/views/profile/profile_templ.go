@@ -109,9 +109,16 @@ func ProfilePageContent(c echo.Context, form forms.ProfileFormValue, err string,
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = form_components.FormTitle("Personal Information", "Use a permanent address where you can receive email.").Render(ctx, templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
+				if isOauth2User {
+					templ_7745c5c3_Err = form_components.FormTitle("Personal Information", "Here you can update your username and display name or change your avatar.").Render(ctx, templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+				} else {
+					templ_7745c5c3_Err = form_components.FormTitle("Personal Information", "Here you can update your username, display name and email or change your avatar.").Render(ctx, templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" ")
 				if templ_7745c5c3_Err != nil {
@@ -136,7 +143,7 @@ func ProfilePageContent(c echo.Context, form forms.ProfileFormValue, err string,
 					var templ_7745c5c3_Var7 string
 					templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(lib.GetAvatar(c))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/profile/profile.templ`, Line: 28, Col: 83}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/profile/profile.templ`, Line: 32, Col: 83}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 					if templ_7745c5c3_Err != nil {
@@ -250,6 +257,15 @@ func ProfilePageContent(c echo.Context, form forms.ProfileFormValue, err string,
 						Name:   "username",
 						Value:  form.Username,
 						HxPost: "/profile/username",
+					}.Comp().Render(ctx, templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					templ_7745c5c3_Err = inputs.Text{
+						Name:   "displayname",
+						Label:  "Display name",
+						Value:  form.DisplayName,
+						HxPost: "/profile/display-name",
 					}.Comp().Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err

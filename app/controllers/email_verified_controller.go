@@ -11,7 +11,8 @@ import (
 func RegisterEmailVerifiedRoutes(e *core.ServeEvent, group echo.Group) {
 	group.GET("/confirm-verification/:token", func(c echo.Context) error {
 		token := c.PathParam("token")
-		if len(token) < 200 {
+		user, _ := e.App.Dao().FindAuthRecordByToken(token, e.App.Settings().RecordVerificationToken.Secret)
+		if user == nil {
 			return c.Redirect(302, "/login")
 		}
 		return lib.Render(c, email_verified.EmailVerifiedSuccessPage())

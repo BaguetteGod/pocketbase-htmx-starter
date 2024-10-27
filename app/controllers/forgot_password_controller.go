@@ -106,7 +106,8 @@ func RegisterForgotPasswordRoutes(e *core.ServeEvent, group echo.Group) {
 
 	group.GET("/confirm-password-reset/:token", func(c echo.Context) error {
 		token := c.PathParam("token")
-		if len(token) < 200 {
+		user, _ := e.App.Dao().FindAuthRecordByToken(token, e.App.Settings().RecordPasswordResetToken.Secret)
+		if user == nil {
 			return c.Redirect(302, "/login")
 		}
 		form := forms.ConfirmPasswordResetFormValue{Token: token}

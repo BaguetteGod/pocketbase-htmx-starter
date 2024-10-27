@@ -106,10 +106,11 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 	group.GET("/profile", func(c echo.Context) error {
 		user := apis.RequestInfo(c).AuthRecord
 		form := forms.ProfileFormValue{
-			Username: user.Username(),
-			Email:    user.Email(),
+			Username:    user.Username(),
+			Email:       user.Email(),
+			DisplayName: user.GetString("displayname"),
 		}
-		return lib.Render(c, profile.ProfilePage(c, form, "", user.Get("oauth") == true))
+		return lib.Render(c, profile.ProfilePage(c, form, "", user.GetBool("oauth")))
 	})
 
 	group.POST("/profile", func(c echo.Context) error {
@@ -118,11 +119,11 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 		err := form.Validate(e, c)
 		if err != nil {
 			formErrors, _ := json.Marshal(err)
-			return lib.Render(c, profile.ProfilePage(c, form, string(formErrors), user.Get("oauth") == true))
+			return lib.Render(c, profile.ProfilePage(c, form, string(formErrors), user.GetBool("oauth")))
 		}
 
 		message := ""
-		if user.Get("oauth") != true && form.Email != user.Email() {
+		if !user.GetBool("oauth") && form.Email != user.Email() {
 			handleRequestEmailChange(c, form.Email)
 			message = fmt.Sprintf("An email has been sent to %s. Please follow the instructions to confirm your new email.", form.Email)
 		}
@@ -131,23 +132,14 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 			return err
 		}
 
+		user.Set("displayname", form.DisplayName)
+
 		if err := app.Dao().SaveRecord(user); err != nil {
 			return err
 		}
 
 		toast.New(c, toast.Toast{Message: message})
-		return lib.Render(c, profile.ProfilePage(c, form, "", user.Get("oauth") == true))
-	})
-
-	group.POST("/profile/username", func(c echo.Context) error {
-		form := forms.GetProfileFormValue(c)
-		err := form.Validate(e, c)
-		if err != nil {
-			formErrors, _ := json.Marshal(err)
-			return lib.Render(c, inputs.Text{Name: "username", Value: form.Username, HxPost: "/profile/username", Error: string(formErrors)}.Comp())
-		}
-
-		return lib.Render(c, inputs.Text{Name: "username", Value: form.Username, HxPost: "/profile/username"}.Comp())
+		return lib.Render(c, profile.ProfilePage(c, form, "", user.GetBool("oauth")))
 	})
 
 	group.POST("/profile/email", func(c echo.Context) error {
@@ -161,9 +153,32 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 		return lib.Render(c, inputs.Text{Name: "email", Label: "Email address", Value: form.Email, HxPost: "/profile/email"}.Comp())
 	})
 
+	group.POST("/profile/username", func(c echo.Context) error {
+		form := forms.GetProfileFormValue(c)
+		err := form.Validate(e, c)
+		if err != nil {
+			formErrors, _ := json.Marshal(err)
+			return lib.Render(c, inputs.Text{Name: "username", Value: form.Username, HxPost: "/profile/username", Error: string(formErrors)}.Comp())
+		}
+
+		return lib.Render(c, inputs.Text{Name: "username", Value: form.Username, HxPost: "/profile/username"}.Comp())
+	})
+
+	group.POST("/profile/display-name", func(c echo.Context) error {
+		form := forms.GetProfileFormValue(c)
+		err := form.Validate(e, c)
+		if err != nil {
+			formErrors, _ := json.Marshal(err)
+			return lib.Render(c, inputs.Text{Name: "displayname", Label: "Display name", Value: form.DisplayName, HxPost: "/profile/display-name", Error: string(formErrors)}.Comp())
+		}
+
+		return lib.Render(c, inputs.Text{Name: "displayname", Label: "Display name", Value: form.DisplayName, HxPost: "/profile/display-name"}.Comp())
+	})
+
 	group.GET("/confirm-email-change/:token", func(c echo.Context) error {
 		token := c.PathParam("token")
-		if len(token) < 200 {
+		user, _ := e.App.Dao().FindAuthRecordByToken(token, e.App.Settings().RecordEmailChangeToken.Secret)
+		if user == nil {
 			return c.Redirect(302, "/dashboard")
 		}
 		form := forms.ConfirmEmailChangeForm{Token: token}
@@ -224,6 +239,6 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 		}
 
 		toast.New(c, toast.Toast{})
-		return lib.Render(c, profile.ProfilePageContent(c, pfForm, "", user.Get("oauth") == true))
+		return lib.Render(c, profile.ProfilePageContent(c, pfForm, "", user.GetBool("oauth")))
 	})
 }

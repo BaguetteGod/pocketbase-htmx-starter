@@ -2,7 +2,7 @@ package extensions
 
 import "github.com/pocketbase/pocketbase/core"
 
-func googleFirstTimeLoginSetUsername(e *core.ServeEvent, app core.App) {
+func googleFirstTimeLoginSetDisplayName(e *core.ServeEvent, app core.App) {
 	e.App.OnRecordAfterAuthWithOAuth2Request("users").Add(func(e *core.RecordAuthWithOAuth2Event) error {
 		if !e.IsNewRecord {
 			return nil
@@ -13,9 +13,7 @@ func googleFirstTimeLoginSetUsername(e *core.ServeEvent, app core.App) {
 			return err
 		}
 
-		if err := user.SetUsername(e.OAuth2User.Name); err != nil {
-			return err
-		}
+		user.Set("displayname", e.OAuth2User.Name)
 
 		if err := app.Dao().SaveRecord(user); err != nil {
 			return err

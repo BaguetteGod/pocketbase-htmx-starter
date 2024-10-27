@@ -21,7 +21,11 @@ templ ProfilePageContent(c echo.Context, form forms.ProfileFormValue, err string
 	<div hx-target="this" hx-ext="alpine-morph" hx-swap="morph">
 		@sidebar.SidebarLayout(c) {
 			@form_components.FormSection() {
-				@form_components.FormTitle("Personal Information", "Use a permanent address where you can receive email.")
+				if isOauth2User {
+					@form_components.FormTitle("Personal Information", "Here you can update your username and display name or change your avatar.")
+				} else {
+					@form_components.FormTitle("Personal Information", "Here you can update your username, display name and email or change your avatar.")
+				}
 				@form_components.FormData() {
 					<div class="flex flex-col gap-6 mb-6">
 						<div class="flex items-center gap-6">
@@ -55,6 +59,12 @@ templ ProfilePageContent(c echo.Context, form forms.ProfileFormValue, err string
 							Name:   "username",
 							Value:  form.Username,
 							HxPost: "/profile/username",
+						}.Comp()
+						@inputs.Text{
+							Name:   "displayname",
+							Label:  "Display name",
+							Value:  form.DisplayName,
+							HxPost: "/profile/display-name",
 						}.Comp()
 						if !isOauth2User {
 							@inputs.Text{
