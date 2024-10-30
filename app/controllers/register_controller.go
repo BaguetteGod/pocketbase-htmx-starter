@@ -31,7 +31,6 @@ func RegisterRegisterRoutes(e *core.ServeEvent, group echo.Group) {
 			return err
 		}
 
-		// data := map[string]interface{}{"email": form.Email}
 		data := structs.Map(form)
 		r := lib.PocketBaseRequest{
 			Route:  "/users/request-verification",
