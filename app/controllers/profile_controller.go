@@ -157,7 +157,6 @@ func handleRequestEmailChange(c echo.Context, form forms.ProfileFormValue, user 
 		Headers: headers,
 	}
 	resp, err := lib.NewPocketBaseRequest(r)
-	fmt.Println(resp)
 
 	return (resp), (err)
 }
