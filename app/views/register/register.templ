@@ -68,7 +68,10 @@ templ RegisterSuccessPage(form forms.RegisterFormValue) {
 			</div>
 			<div class="flex flex-col gap-4 text-gray-700">
 				<p class="text-gray-700 mt-2">
-					You have successfully registered an account. An email has been sent to { form.Email }. Please follow the
+					You have successfully registered an account. An email has been sent to
+					<span class="font-semibold">
+						{ form.Email }
+					</span>. Please follow the
 					instructions to activate your account.
 				</p>
 				@inputs.Url{Route: "/login"}.Comp() {

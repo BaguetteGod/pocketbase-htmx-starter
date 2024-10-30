@@ -68,9 +68,9 @@ templ ProfilePageContent(c echo.Context, form forms.ProfileFormValue, err string
 						}.Comp()
 						if !isOauth2User {
 							@inputs.Text{
-								Name:   "email",
+								Name:   "newEmail",
 								Label:  "Email address",
-								Value:  form.Email,
+								Value:  form.NewEmail,
 								HxPost: "/profile/email",
 							}.Comp()
 						}

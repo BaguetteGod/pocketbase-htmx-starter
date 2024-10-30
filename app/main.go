@@ -1,9 +1,9 @@
 package main
 
 import (
+	"log"
 	"pb-starter/app/pocketbase/extensions"
 	"pb-starter/app/routes"
-	"log"
 
 	"github.com/joho/godotenv"
 	"github.com/pocketbase/pocketbase"

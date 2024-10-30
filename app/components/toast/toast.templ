@@ -18,6 +18,7 @@ templ ToastComponent() {
                 $dispatch('make:toast', event?.detail)
             }),
             closeToast(index) {
+                if (!this.toasts.length) return
                 this.toasts[index].open = false
                 setTimeout(() => {
                     this.toasts.splice(index, 1)

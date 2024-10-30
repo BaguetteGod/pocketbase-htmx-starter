@@ -11,19 +11,19 @@ import (
 )
 
 type ProfileFormValue struct {
-	Email       string `json:"email"`
+	NewEmail    string `json:"newEmail"`
 	Username    string `json:"username"`
 	DisplayName string `json:"displayname"`
 }
 
 func (pfv ProfileFormValue) Validate(e *core.ServeEvent, c echo.Context) error {
 	user := apis.RequestInfo(c).AuthRecord
-	emailChanged := user.Email() != pfv.Email
+	emailChanged := user.Email() != pfv.NewEmail
 	usernameChanged := user.Username() != pfv.Username
 	isOauth2User := user.GetBool("oauth")
 
 	return validation.ValidateStruct(&pfv,
-		validation.Field(&pfv.Email,
+		validation.Field(&pfv.NewEmail,
 			validation.When(!isOauth2User && emailChanged,
 				validation.Required,
 				is.Email,
@@ -42,7 +42,7 @@ func (pfv ProfileFormValue) Validate(e *core.ServeEvent, c echo.Context) error {
 
 func GetProfileFormValue(c echo.Context) ProfileFormValue {
 	return ProfileFormValue{
-		Email:       c.FormValue("email"),
+		NewEmail:    c.FormValue("newEmail"),
 		Username:    c.FormValue("username"),
 		DisplayName: c.FormValue("displayname"),
 	}

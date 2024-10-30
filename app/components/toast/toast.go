@@ -42,4 +42,6 @@ func New(c echo.Context, toast Toast) {
 func (t Toast) SetHXTriggerHeader(c echo.Context) {
 	jsonData, _ := t.jsonify()
 	c.Response().Header().Set("HX-Trigger", jsonData)
+	toasts := c.Response().Header().Get("HX-Trigger")
+	println(toasts)
 }

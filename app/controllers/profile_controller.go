@@ -1,22 +1,20 @@
 package controllers
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
-	"os"
-	"pb-starter/app/components/inputs"
 	"pb-starter/app/components/toast"
+	"pb-starter/app/controllers/validation_routes"
 	"pb-starter/app/forms"
 	"pb-starter/app/lib"
 	middleware "pb-starter/app/middelware"
 	"pb-starter/app/views/profile"
 
-	"github.com/joho/godotenv"
+	"github.com/fatih/structs"
 	"github.com/pocketbase/pocketbase"
 	pbforms "github.com/pocketbase/pocketbase/forms"
+	"github.com/pocketbase/pocketbase/models"
 	"github.com/pocketbase/pocketbase/tools/filesystem"
 
 	"github.com/labstack/echo/v5"
@@ -24,90 +22,12 @@ import (
 	"github.com/pocketbase/pocketbase/core"
 )
 
-func handleRequestEmailChange(c echo.Context, email string) {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
-	tokenCookie, err := c.Cookie(middleware.AuthCookieName)
-	if err != nil {
-		fmt.Println("Error getting cookie:", err)
-		return
-	}
-
-	url := fmt.Sprintf("%s/api/collections/users/request-email-change", os.Getenv("APP_URL"))
-
-	jsonDataMap := map[string]interface{}{
-		"newEmail": email,
-	}
-	jsonData, err := json.Marshal(jsonDataMap)
-	if err != nil {
-		fmt.Println("Error marshalling JSON:", err)
-		return
-	}
-
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
-	if err != nil {
-		fmt.Println("Error creating request:", err)
-		return
-	}
-
-	req.Header.Set("Content-type", "application/json")
-	req.Header.Set("Authorization", tokenCookie.Value)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Println("Error sending request:", err)
-		return
-	}
-	defer resp.Body.Close()
-}
-
-func handleConfirmEmailChangeRequest(form forms.ConfirmEmailChangeForm) *http.Response {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
-	url := fmt.Sprintf("%s/api/collections/users/confirm-email-change", os.Getenv("APP_URL"))
-
-	jsonData, err := json.Marshal(form)
-	if err != nil {
-		fmt.Println("Error marshalling JSON:", err)
-		return nil
-	}
-
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
-	if err != nil {
-		fmt.Println("Error creating request:", err)
-		return nil
-	}
-
-	req.Header.Set("Content-type", "application/json")
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Println("Error sending request:", err)
-		return nil
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 204 {
-		return resp
-	}
-
-	return nil
-}
-
 func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase.PocketBase) {
 	group.GET("/profile", func(c echo.Context) error {
 		user := apis.RequestInfo(c).AuthRecord
 		form := forms.ProfileFormValue{
 			Username:    user.Username(),
-			Email:       user.Email(),
+			NewEmail:    user.Email(),
 			DisplayName: user.GetString("displayname"),
 		}
 		return lib.Render(c, profile.ProfilePage(c, form, "", user.GetBool("oauth")))
@@ -123,9 +43,9 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 		}
 
 		message := ""
-		if !user.GetBool("oauth") && form.Email != user.Email() {
-			handleRequestEmailChange(c, form.Email)
-			message = fmt.Sprintf("An email has been sent to %s. Please follow the instructions to confirm your new email.", form.Email)
+		resp, _ := handleRequestEmailChange(c, form, user)
+		if resp != nil && resp.StatusCode == 204 {
+			message = fmt.Sprintf("An email has been sent to %s. Please follow the instructions to confirm your new email.", form.NewEmail)
 		}
 
 		if err := user.SetUsername(form.Username); err != nil {
@@ -140,39 +60,6 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 
 		toast.New(c, toast.Toast{Message: message})
 		return lib.Render(c, profile.ProfilePage(c, form, "", user.GetBool("oauth")))
-	})
-
-	group.POST("/profile/email", func(c echo.Context) error {
-		form := forms.GetProfileFormValue(c)
-		err := form.Validate(e, c)
-		if err != nil {
-			formErrors, _ := json.Marshal(err)
-			return lib.Render(c, inputs.Text{Name: "email", Label: "Email address", Value: form.Email, HxPost: "/profile/email", Error: string(formErrors)}.Comp())
-		}
-
-		return lib.Render(c, inputs.Text{Name: "email", Label: "Email address", Value: form.Email, HxPost: "/profile/email"}.Comp())
-	})
-
-	group.POST("/profile/username", func(c echo.Context) error {
-		form := forms.GetProfileFormValue(c)
-		err := form.Validate(e, c)
-		if err != nil {
-			formErrors, _ := json.Marshal(err)
-			return lib.Render(c, inputs.Text{Name: "username", Value: form.Username, HxPost: "/profile/username", Error: string(formErrors)}.Comp())
-		}
-
-		return lib.Render(c, inputs.Text{Name: "username", Value: form.Username, HxPost: "/profile/username"}.Comp())
-	})
-
-	group.POST("/profile/display-name", func(c echo.Context) error {
-		form := forms.GetProfileFormValue(c)
-		err := form.Validate(e, c)
-		if err != nil {
-			formErrors, _ := json.Marshal(err)
-			return lib.Render(c, inputs.Text{Name: "displayname", Label: "Display name", Value: form.DisplayName, HxPost: "/profile/display-name", Error: string(formErrors)}.Comp())
-		}
-
-		return lib.Render(c, inputs.Text{Name: "displayname", Label: "Display name", Value: form.DisplayName, HxPost: "/profile/display-name"}.Comp())
 	})
 
 	group.GET("/confirm-email-change/:token", func(c echo.Context) error {
@@ -194,8 +81,14 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 			return lib.Render(c, profile.ConfirmEmailChangePage(form, string(formErrors)))
 		}
 
-		resp := handleConfirmEmailChangeRequest(form)
-		if resp != nil {
+		data := structs.Map(form)
+		r := lib.PocketBaseRequest{
+			Route:  "/users/confirm-email-change",
+			Method: "POST",
+			Data:   data,
+		}
+		resp, _ := lib.NewPocketBaseRequest(r)
+		if resp.StatusCode != 204 {
 			toast.New(c, toast.Toast{Level: toast.DANGER, Title: "Link is invalid or has expired"})
 			return lib.Render(c, profile.ConfirmEmailChangePage(form, ""))
 		}
@@ -208,7 +101,7 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 		file, err := c.FormFile("avatar")
 		pfForm := forms.ProfileFormValue{
 			Username: user.Username(),
-			Email:    user.Email(),
+			NewEmail: user.Email(),
 		}
 
 		if err != nil {
@@ -241,4 +134,30 @@ func RegisterProfileRoutes(e *core.ServeEvent, group echo.Group, app *pocketbase
 		toast.New(c, toast.Toast{})
 		return lib.Render(c, profile.ProfilePageContent(c, pfForm, "", user.GetBool("oauth")))
 	})
+
+	validation_routes.RegisterProfileValidationRoutes(e, group)
+}
+
+func handleRequestEmailChange(c echo.Context, form forms.ProfileFormValue, user *models.Record) (*http.Response, error) {
+	if user.GetBool("oauth") || form.NewEmail == user.Email() {
+		return (nil), (nil)
+	}
+	tokenCookie, err := c.Cookie(middleware.AuthCookieName)
+	if err != nil {
+		fmt.Println("Error getting cookie:", err)
+		return (nil), (err)
+	}
+
+	data := structs.Map(form)
+	headers := map[string]string{"Authorization": tokenCookie.Value}
+	r := lib.PocketBaseRequest{
+		Route:   "/users/request-email-change",
+		Method:  "POST",
+		Data:    data,
+		Headers: headers,
+	}
+	resp, err := lib.NewPocketBaseRequest(r)
+	fmt.Println(resp)
+
+	return (resp), (err)
 }
